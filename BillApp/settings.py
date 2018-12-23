@@ -139,3 +139,7 @@ DATABASES = {
         default='sqlite:////{0}'.format(os.path.join(BASE_DIR, 'db.sqlite3'))
     )
 }
+
+
+import mimetypes
+mimetypes.add_type("text/css", ".css", True)
