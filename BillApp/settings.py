@@ -146,6 +146,7 @@ STATICFILES_DIRS = (
 ALLOWED_HOSTS = ['*']
 
 import dj_database_url
+print('sqlite:////{0}'.format(os.path.join(BASE_DIR, 'db.sqlite3')))
 
 DATABASES = {
     'default': dj_database_url.config(

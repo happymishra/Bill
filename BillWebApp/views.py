@@ -3,6 +3,7 @@ from rest_framework.decorators import api_view
 from .models import BillDetails
 from rest_framework import status
 from django.http import JsonResponse
+import traceback
 
 
 @api_view(['GET'])
@@ -16,7 +17,7 @@ def get_bill_details(request):
     try:
         for each_bill in query:
             each_data = {
-                "billNo": each_bill.bill_no,
+                "billNo": each_bill.bill_,
                 "source": each_bill.source,
                 "destination": each_bill.destination,
                 "amount": each_bill.amount,
@@ -45,6 +46,7 @@ def get_bill_details(request):
         resp['newBillNo'] = int(last_bill_no) + 1
 
     except Exception as ex:
+        raise ex
         resp["status"] = status.HTTP_500_INTERNAL_SERVER_ERROR
         resp['message'] = str(ex)
 
@@ -84,6 +86,7 @@ def add_bill_details(request):
         bill_details_obj.save()
         resp['status'] = status.HTTP_200_OK
     except Exception as ex:
+        raise ex
         resp['status'] = status.HTTP_500_INTERNAL_SERVER_ERROR
         resp['message'] = str(ex)
 
@@ -122,6 +125,7 @@ def update_bill_details(request):
 
         resp['status'] = status.HTTP_200_OK
     except Exception as ex:
+        raise ex
         resp['status'] = status.HTTP_500_INTERNAL_SERVER_ERROR
         resp['message'] = str(ex)
 
