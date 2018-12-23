@@ -1,0 +1,159 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title id='Description'>Laxmi Road Lines Bills</title>
+    <link rel="stylesheet" href="{% static 'jqwidgets/styles/jqx.base.css' %}" type="text/css"/>
+    <link rel="stylesheet" href="{% static 'jqwidgets/styles/jqx.light.css' %}" type="text/css"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'billTable.css' %}">
+    <link type="text/css" rel="stylesheet" href="{% static 'jsgrid.min.css' %}"/>
+    <link type="text/css" rel="stylesheet" href="{% static 'jsgrid-theme.min.css' %}"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1 maximum-scale=1 minimum-scale=1"/>
+
+    <script type="text/javascript" src="{% static 'jquery-1.11.2.js' %}"></script>
+    <script type="text/javascript" src="{% static 'jqwidgets/jqxcore.js' %}"></script>
+    <script type="text/javascript" src="{% static 'jqwidgets/jqxdata.js' %}"></script>
+    <script type="text/javascript" src="{% static 'jqwidgets/jqxbuttons.js' %}"></script>
+    <script type="text/javascript" src="{% static 'jqwidgets/jqxscrollbar.js' %}"></script>
+    <script type="text/javascript" src="{% static 'jqwidgets/jqxmenu.js' %}"></script>
+    <script type="text/javascript" src="{% static 'jqwidgets/jqxgrid.js' %}"></script>
+    <script type="text/javascript" src="{% static 'jqwidgets/jqxgrid.edit.js' %}"></script>
+    <script type="text/javascript" src="{% static 'jqwidgets/jqxgrid.sort.js' %}"></script>
+    <script type="text/javascript" src="{% static 'jqwidgets/jqxgrid.filter.js' %}"></script>
+    <script type="text/javascript" src="{% static 'jqwidgets/jqxgrid.selection.js' %}"></script>
+    <script type="text/javascript" src="{% static 'jqwidgets/jqxgrid.pager.js' %}"></script>
+    <script type="text/javascript" src="{% static 'jqwidgets/jqxdata.export.js' %}"></script>
+    <script type="text/javascript" src="{% static 'jqwidgets/jqxgrid.export.js' %}"></script>
+    <script type="text/javascript" src="{% static 'jqwidgets/jqxgrid.columnsresize.js' %}"></script>
+    <script type="text/javascript" src="{% static 'jqwidgets/jqxlistbox.js' %}"></script>
+    <script type="text/javascript" src="{% static 'jqwidgets/jqxdropdownlist.js' %}"></script>
+    <script type="text/javascript" src="{% static 'jqwidgets/jqxcheckbox.js' %}"></script>
+    <script type="text/javascript" src="{% static 'jqwidgets/jqxcalendar.js' %}"></script>
+    <script type="text/javascript" src="{% static 'jqwidgets/jqxnumberinput.js' %}"></script>
+    <script type="text/javascript" src="{% static 'jqwidgets/jqxdatetimeinput.js' %}"></script>
+    <script type="text/javascript" src="{% static 'jqwidgets/globalization/globalize.js' %}"></script>
+    {#    <script type="text/javascript" src="{% static 'demos.js' %}"></script>#}
+    <script type="text/javascript" src="{% static 'billForm.js' %}"></script>
+    <script type="text/javascript" src="{% static 'jspdf.min.js' %} "></script>
+    <script type="text/javascript" src="{% static 'html2canvas.min.js' %} "></script>
+    {#    <script type="text/javascript" src="{% static 'generatedata.js' %}"></script>#}
+    <script type="text/javascript" src="{% static 'fetchData.js' %}"></script>
+    <script type="text/javascript" src="{% static 'billForm.js' %}"></script>
+    <script type="text/javascript" src="{% static 'jquery.num2words.js' %}"></script>
+    <script type="text/javascript" src="{% static 'printThis.js' %}"></script>
+    {#    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>#}
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            getAllBillDetails();
+            $("#print-selected-bill").jqxButton();
+            $("#excelExport").jqxButton();
+            $("#pdfExport").jqxButton();
+            $("#print").jqxButton();
+
+            $("#print-selected-bill").on('click', function () {
+                var selectedrowindex = $("#grid").jqxGrid('getselectedrowindex');
+
+                var rowscount = $("#grid").jqxGrid('getdatainformation').rowscount;
+
+                if (selectedrowindex >= 0 && selectedrowindex < rowscount) {
+                    var selectedRowData = $('#grid').jqxGrid('getrowdata', selectedrowindex);
+                    var dataAdapter = new $.jqx.dataAdapter(selectedRowData);
+
+                    selectedRowData['billSubmissionDate'] = dataAdapter.formatDate(selectedRowData.billSubmissionDate, 'dd-MM-yyyy')
+                    selectedRowData['shipmentDate'] = dataAdapter.formatDate(selectedRowData.shipmentDate, 'dd-MM-yyyy')
+                    printData(selectedRowData)
+
+                } else {
+                    alert("Please select a valid row");
+                }
+            });
+
+
+            $("#excelExport").click(function () {
+                $("#grid").jqxGrid('exportdata', 'xls', 'BillDetails');
+            });
+
+
+            $("#pdfExport").click(function () {
+                $("#grid").jqxGrid('exportdata', 'pdf', 'BillDetails');
+            });
+
+
+            $("#print").click(function () {
+                var gridContent = $("#grid").jqxGrid('exportdata', 'html');
+                var newWindow = window.open('', '', 'width=800, height=500'),
+                        document = newWindow.document.open(),
+                        pageContent =
+                                '<!DOCTYPE html>\n' +
+                                '<html>\n' +
+                                '<head>\n' +
+                                '<meta charset="utf-8" />\n' +
+                                '<title>jQWidgets Grid</title>\n' +
+                                '</head>\n' +
+                                '<body>\n' + gridContent + '\n</body>\n</html>';
+                document.write(pageContent);
+                var tds = document.getElementsByTagName("th");
+
+                for (var i = 0; i < tds.length; i++) {
+                    tds[i].style.borderWidth = "1px";
+                }
+
+                {#                setTimeout(function () {#}
+                {#                    newWindow.print();#}
+                {#                    console.log('Hello')#}
+                {#                }, 500);#}
+                {#                window.onfocus = function () {#}
+                {#                    setTimeout(function () {#}
+                {#                        document.close();#}
+                {#                    }, 500);#}
+                {#                }#}
+                document.close();
+                newWindow.print();
+
+                setTimeout(function () {
+                    newWindow.close();
+                    console.log('Hello')
+                }, 500);
+{#                newWindow.close()#}
+            });
+
+        });
+    </script>
+</head>
+<body class='default'>
+<h1 style="text-align: center; color: #337ab7;">Laxmi Roadlines</h1>
+<div id='jqxWidget' style="padding: 20px">
+    <div id="grid"></div>
+    <div style='margin-top: 20px;'>
+        <div style='float: left;'>
+            <input type="button" value="Export to Excel" id='excelExport' class="btn btn-primary"/>
+        </div>
+
+        <div style='margin-left: 10px; float: left;'>
+            <input type="button" value="Export to PDF" id='pdfExport' class="btn btn-primary"/>
+        </div>
+
+        <div style='margin-left: 10px; float: left;'>
+            <input type="button" value="Print Selected Bill" id='print-selected-bill' class="btn btn-primary"/>
+        </div>
+
+        <div style='margin-left: 10px; float: left;'>
+            <input type="button" value="Print Table" id='print' class="btn btn-primary"/>
+        </div>
+        <div style='margin-left: 10px; float: left;'>
+            <a href="http://127.0.0.1:8007/addBill" class="btn btn-primary" id="new-bill">Add New Bill</a>
+        </div>
+
+    </div>
+</div>
+</div>
+<div id="bill-table" style="width: 100%; font-family: monospace">
+</div>
+</body>
+</html>

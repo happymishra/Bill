@@ -1,0 +1,182 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Laxmi Road Lines Bill</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css"
+          href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.min.css"/>
+    <link type="text/css" rel="stylesheet" href="{% static 'jsgrid.min.css' %}"/>
+    <link type="text/css" rel="stylesheet" href="{% static 'jsgrid-theme.min.css' %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'billTable.css' %}">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js"></script>
+
+    <script type="text/javascript" src="{% static 'billForm.js' %}"></script>
+    <script type="text/javascript" src="{% static 'jspdf.min.js' %} "></script>
+    <script type="text/javascript" src="{% static 'html2canvas.min.js' %} "></script>
+    <script type="text/javascript" src="{% static 'jsgrid.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'billForm.js' %}"></script>
+    <script type="text/javascript" src="{% static 'jquery.num2words.js' %}"></script>
+    <script type="text/javascript" src="{% static 'printThis.js' %}"></script>
+
+    <script>
+        function GetURLParameter(sParam) {
+            var sPageURL = window.location.search.substring(1);
+            var sURLVariables = sPageURL.split('&');
+            for (var i = 0; i < sURLVariables.length; i++) {
+                var sParameterName = sURLVariables[i].split('=');
+                if (sParameterName[0] == sParam) {
+                    return decodeURIComponent(sParameterName[1]);
+                }
+            }
+        }
+
+        var billNo = GetURLParameter('billNo');
+    </script>
+
+
+</head>
+<body>
+
+<div class="container" style="padding-top: 10px; padding-bottom: 20px">
+    <h2 style="color: #337ab7;">Enter Bill Details</h2>
+    <form>
+        <input id="bill-no" type="hidden"/>
+        <div class="form-group">
+            <label for="source">Source:</label>
+            <input type="text" class="form-control" id="source" placeholder="Source" name="source">
+        </div>
+
+        <div class="form-group">
+            <label for="destination">Destination:</label>
+            <input type="text" class="form-control" id="destination" placeholder="Destination" name="destination">
+        </div>
+
+        <div class="form-group">
+            <label for="vehicle-num">Vehicle Number:</label>
+            <input type="text" class="form-control" id="vehicle-num" placeholder="Vehicle Number" name="vehicle-num">
+        </div>
+
+        <div class="form-group">
+            <label for="ship-date">Shipping Date:</label>
+            <div class='input-group date' id='shipping-date'>
+                <input type='text' class="form-control" id="shipping-date-val" placeholder="Shipping Date"/>
+                <span class="input-group-addon">
+						<span class="glyphicon glyphicon-calendar"></span>
+					</span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="ship-date">Billing Date:</label>
+            <div class='input-group date' id='billing-date'>
+                <input type='text' class="form-control" id="billing-date-val"/>
+                <span class="input-group-addon">
+						<span class="glyphicon glyphicon-calendar"></span>
+					</span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="docket-num">Docket Number:</label>
+            <input type="text" class="form-control" id="docket-num" placeholder="Docket Number" name="docket-num">
+        </div>
+
+        <div class="form-group">
+            <label for="docket-charges">Docket Charges:</label>
+            <input type="text" class="form-control" id="docket-charges" value="100" placeholder="Docket Charges"
+                   name="docket-charges">
+        </div>
+
+        <div class="form-group">
+            <label for="rate">Rate:</label>
+            <input type="text" class="form-control" id="rate" placeholder="Docket Charges" name="rate">
+        </div>
+
+        <div class="form-group">
+            <label for="quantity">Quantity:</label>
+            <input type="text" class="form-control" id="quantity" placeholder="Quantity"
+                   name="quantity" value="FTL">
+        </div>
+
+        <div class="form-group">
+            <label for="company-name">Company Name:</label>
+            <input type="text" class="form-control" id="company-name" placeholder="Company Name" name="company-name">
+        </div>
+
+        <div class="form-group">
+            <label for="address">Address:</label>
+            <input type="text" class="form-control" id="address" placeholder="Address" name="address">
+        </div>
+
+        <div class="form-group">
+            <label for="city">District:</label>
+            <input type="text" class="form-control" id="district" placeholder="District" name="district">
+        </div>
+
+        <div class="form-group">
+            <label for="city">City:</label>
+            <input type="text" class="form-control" id="city" placeholder="City" name="city">
+        </div>
+
+        <div class="form-group">
+            <label for="pin-code">Pin Code:</label>
+            <input type="text" class="form-control" id="pin-code" placeholder="Pin Code" name="pin-code">
+        </div>
+
+        <div class="form-group">
+            <label for="gstin">GSTIN:</label>
+            <input type="text" class="form-control" id="gstin" placeholder="GSTIN" name="gstin">
+        </div>
+
+        <div class="form-group">
+            <label for="detention-charges">Detention or Demurrage Charges:</label>
+            <input type="text" class="form-control" id="detention-charges"
+                   placeholder="Detention or Demurrage Charges"
+                   name="detention-charges" value="0">
+        </div>
+
+        <div class="form-group">
+            <label for="over-height-charges">Over Height Charges:</label>
+            <input type="text" class="form-control" id="over-height-charges"
+                   placeholder="Over Height Charges" name="over-height-charges" value="0">
+        </div>
+
+        <div class="form-group">
+            <label for="fov-charges">FOV Charges</label>
+            <input type="text" class="form-control" id="gstin" value="0" placeholder="FOV charges" name="fov-charges">
+        </div>
+
+        <button type="button" class="btn btn-primary" onclick="printData()">Add & Print</button>
+    </form>
+</div>
+</div>
+
+<div id="bill-table" style="width: 100%">
+
+<script type="text/javascript">
+    $(function () {
+        $('#bill-no').val(billNo);
+        $('#shipping-date').datetimepicker({
+            format: 'DD-MM-YYYY'
+        });
+
+        $('#billing-date').datetimepicker({
+            format: 'DD-MM-YYYY',
+            defaultDate: new Date()
+
+        });
+    });
+</script>
+
+</body>
+</html>
