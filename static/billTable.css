@@ -1,0 +1,130 @@
+.my-table{
+	display: table;
+	width: 100%;
+}
+
+.my-table-heading {
+	display: table-row;
+	font-weight: bold;
+	text-align: center;
+}
+
+.my-table-row {
+	display: table-row;
+}
+
+.my-table-cell {
+	display: table-cell;
+	border: solid;
+	border-width: thin;
+	padding-left: 5px;
+	padding-right: 5px;
+	text-align: right;
+}
+
+.firstcolumn {
+	display: table-cell;
+	border: solid;
+	border-width: thin;
+	padding-left: 5px;
+	padding-right: 5px;
+	text-align: center;
+	width: 10%;
+}
+
+
+
+.secondcolumn {
+	display: table-cell;
+	border: solid;
+	border-width: thin;
+	padding-left: 5px;
+	padding-right: 5px;
+	width: 45%;
+}
+
+.thirdcolumn {
+	display: table-cell;
+	border: solid;
+	border-width: thin;
+	padding-left: 5px;
+	padding-right: 5px;
+	width: 20%;
+}
+
+.merge {
+	display: table-cell;
+	border: solid;
+	border-width: thin;
+	padding-left: 5px;
+	padding-right: 5px;
+	text-align: right;
+	width: 75%;
+}
+
+.header-css {
+	text-align: center;
+}
+
+.container-table {
+	display: table;
+	width:100%;
+}
+
+.header-laxmi {
+	text-align: center;
+	font-size: 24px;
+	font-weight: bold;
+	text-decoration: underline;
+}
+
+/*.btn-primary {*/
+    /*color: #fff;*/
+    /*background-color: #337ab7;*/
+    /*border-color: #2e6da4;*/
+/*}*/
+
+/*.btn {*/
+    /*display: inline-block;*/
+    /*padding: 6px 12px;*/
+    /*margin-bottom: 0;*/
+    /*font-size: 14px;*/
+    /*font-weight: 400;*/
+    /*line-height: 1.42857143;*/
+    /*text-align: center;*/
+    /*white-space: nowrap;*/
+    /*vertical-align: middle;*/
+    /*-ms-touch-action: manipulation;*/
+    /*touch-action: manipulation;*/
+    /*cursor: pointer;*/
+    /*-webkit-user-select: none;*/
+    /*-moz-user-select: none;*/
+    /*-ms-user-select: none;*/
+    /*user-select: none;*/
+    /*background-image: none;*/
+    /*border: 1px solid transparent;*/
+    /*border-radius: 4px;*/
+/*}*/
+
+/*a {*/
+    /*color: #337ab7;*/
+    /*text-decoration: none;*/
+/*}*/
+
+/*@page  {*/
+    /*size: auto;   !* auto is the initial value *!*/
+
+    /*!* this affects the margin in the printer settings *!*/
+    /*margin: 25mm 25mm 25mm 25mm;  } !* try 0 *!*/
+
+ /*body  {*/
+    /*!* this affects the margin on the content before sending to printer *!*/
+    /*margin: 0px;  }*/
+
+label {
+	font-size: 16px !important;
+}
+
+@media print {
+    #Header, #Footer { display: none !important; }
+}
