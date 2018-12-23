@@ -1,1 +1,1 @@
-web: gunicorn xyz.wsgi
+web: gunicorn BillApp.wsgi --log-file -
