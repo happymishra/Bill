@@ -46,8 +46,8 @@ def get_bill_details(request):
 
     except Exception as ex:
         resp["status"] = status.HTTP_500_INTERNAL_SERVER_ERROR
+        resp['message'] = str(ex)
 
-    resp["Access-Control-Allow-Origin"] = "*"
     return JsonResponse(resp)
 
 
@@ -85,6 +85,7 @@ def add_bill_details(request):
         resp['status'] = status.HTTP_200_OK
     except Exception as ex:
         resp['status'] = status.HTTP_500_INTERNAL_SERVER_ERROR
+        resp['message'] = str(ex)
 
     return JsonResponse(resp)
 
@@ -122,8 +123,7 @@ def update_bill_details(request):
         resp['status'] = status.HTTP_200_OK
     except Exception as ex:
         resp['status'] = status.HTTP_500_INTERNAL_SERVER_ERROR
-
-    resp["Access-Control-Allow-Origin"] = "*"
+        resp['message'] = str(ex)
 
     return JsonResponse(resp)
 

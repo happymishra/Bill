@@ -73,7 +73,7 @@ function makeTable(dataAdapter) {
             {
                 text: 'Bill No', columntype: 'textbox', filtertype: 'textbox', datafield: 'billNo', width: '8%',
                 cellsrenderer: function (index, datafield, value, defaultvalue, column, rowdata) {
-                    return "<div style='margin: 4px;'>" + convertNumberToCurrency(value) + "</div>";
+                    return "<div style='margin: 4px;'>" + value + "</div>";
 
                 }
             },
