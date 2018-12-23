@@ -301,7 +301,7 @@ var getBillDetails = function (rowdata) {
 
 
     billTableDOM.printThis({
-        pageTitle: "",
+        pageTitle: "THis is new",
         header: '',
         footer: '',
         beforePrint: function () {
@@ -318,7 +318,7 @@ var getBillDetails = function (rowdata) {
 function addBillDB(rowdata) {
     $.ajax({
         type: "POST",
-        url: '/api/addBillDetails',
+        url: 'http://127.0.0.1:8100/api/addBillDetails',
         dataType: 'json',
         data: rowdata,
         success: function (data) {

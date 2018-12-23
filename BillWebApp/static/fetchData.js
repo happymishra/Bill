@@ -3,7 +3,7 @@ function getAllBillDetails() {
         type: 'GET',
         dataType: 'json',
         async: false,
-        url: '/api/getBillDetails',
+        url: 'http://127.0.0.1:8100/api/getBillDetails',
         contentType: 'application/json',
         success: function (data) {
             var dataAdapter = new $.jqx.dataAdapter(prepareDataForGrid(data.data));
@@ -70,10 +70,10 @@ function makeTable(dataAdapter) {
         altrows: true,
         columns: [
 
-                        {
+            {
                 text: 'Bill No', columntype: 'textbox', filtertype: 'textbox', datafield: 'billNo', width: '8%',
                 cellsrenderer: function (index, datafield, value, defaultvalue, column, rowdata) {
-                    return "<div style='margin: 4px;'>" + value + "</div>";
+                    return "<div style='margin: 4px;'>" + convertNumberToCurrency(value) + "</div>";
 
                 }
             },
@@ -141,7 +141,7 @@ function makeTable(dataAdapter) {
 function updateServerDb(rowdata, commit) {
     $.ajax({
         type: "POST",
-        url: 'http://127.0.0.1:8007/api/updateBillDetails',
+        url: 'http://127.0.0.1:8100/api/updateBillDetails',
         dataType: 'json',
         data: rowdata,
         success: function (data) {
