@@ -55,7 +55,7 @@ ROOT_URLCONF = 'BillApp.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')]
+        'DIRS': [os.path.join(BASE_DIR, 'BillWebApp/templates')]
         ,
         'APP_DIRS': True,
         'OPTIONS': {
@@ -124,11 +124,15 @@ STATIC_URL = '/static/'
 # STATIC_ROOT = os.path.join(PROJECT_DIR, 'static')
 
 # Add these new lines
-STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, 'static'),
-)
+# STATICFILES_DIRS = (
+#     os.path.join(BASE_DIR, 'static'),
+# )
+#
+# STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
+STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 ALLOWED_HOSTS = ['*']
 
