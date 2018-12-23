@@ -141,7 +141,7 @@ function makeTable(dataAdapter) {
 function updateServerDb(rowdata, commit) {
     $.ajax({
         type: "POST",
-        url: 'http://127.0.0.1:8100/api/updateBillDetails',
+        url: '/api/updateBillDetails',
         dataType: 'json',
         data: rowdata,
         success: function (data) {
