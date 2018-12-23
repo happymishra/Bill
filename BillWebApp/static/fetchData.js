@@ -3,7 +3,7 @@ function getAllBillDetails() {
         type: 'GET',
         dataType: 'json',
         async: false,
-        url: '/api/getBillDetails',
+        url: 'http://127.0.0.1:8100/api/getBillDetails',
         contentType: 'application/json',
         success: function (data) {
             var dataAdapter = new $.jqx.dataAdapter(prepareDataForGrid(data.data));
