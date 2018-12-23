@@ -17,7 +17,7 @@ def get_bill_details(request):
     try:
         for each_bill in query:
             each_data = {
-                "billNo": each_bill.bill_,
+                "billNo": each_bill.bill_no,
                 "source": each_bill.source,
                 "destination": each_bill.destination,
                 "amount": each_bill.amount,
