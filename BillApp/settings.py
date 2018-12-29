@@ -83,6 +83,22 @@ WSGI_APPLICATION = 'BillApp.wsgi.application'
 #     }
 # }
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': 'laxmiroadlinesbills',
+#         'USER': 'myprojectuser',
+#         'PASSWORD': 'password',
+#         'HOST': '127.0.0.1',
+#         'PORT': '55698',
+#     }
+# }
+
+import dj_database_url
+DATABASES = {
+    'default': dj_database_url.config('DATABASE_URL')
+}
+
 
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
@@ -145,14 +161,14 @@ STATICFILES_DIRS = (
 
 ALLOWED_HOSTS = ['*']
 
-import dj_database_url
-print('sqlite:////{0}'.format(os.path.join(BASE_DIR, 'db.sqlite3')))
+# import dj_database_url
+# print('sqlite:////{0}'.format(os.path.join(BASE_DIR, 'db.sqlite3')))
 
-DATABASES = {
-    'default': dj_database_url.config(
-        default='sqlite:////{0}'.format(os.path.join(BASE_DIR, 'db.sqlite3'))
-    )
-}
+# DATABASES = {
+#     'default': dj_database_url.config(
+#         default='sqlite:////{0}'.format(os.path.join(BASE_DIR, 'db.sqlite3'))
+#     )
+# }
 
 
 import mimetypes
