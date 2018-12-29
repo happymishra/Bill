@@ -21,4 +21,4 @@ class BillDetails(models.Model):
     quantity = models.CharField(max_length=50)
 
     class Meta:
-        db_table = 'bill_detail'
+        db_table = u'bill_detail'
