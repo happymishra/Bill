@@ -19,3 +19,6 @@ class BillDetails(models.Model):
     over_height_charges = models.IntegerField(db_column="DetentionCharges")
     fov_charges = models.IntegerField(db_column="FOVCharges")
     quantity = models.CharField(max_length=50)
+
+    class Meta:
+        db_table = 'bill_detail'
