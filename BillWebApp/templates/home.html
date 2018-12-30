@@ -5,7 +5,7 @@
 <head>
     <title id='Description'>Laxmi Road Lines Bills</title>
     <link rel="stylesheet" href="{% static 'jqwidgets/styles/jqx.base.css' %}" type="text/css"/>
-    <link rel="stylesheet" href="{% static 'jqwidgets/styles/jqx.light.css' %}" type="text/css"/>
+    <link rel="stylesheet" href="{% static 'jqwidgets/styles/jqx.arctic.css' %}" type="text/css"/>
     <link rel="stylesheet" type="text/css" href="{% static 'billTable.css' %}">
     <link type="text/css" rel="stylesheet" href="{% static 'jsgrid.min.css' %}"/>
     <link type="text/css" rel="stylesheet" href="{% static 'jsgrid-theme.min.css' %}"/>
@@ -36,7 +36,7 @@
     <script type="text/javascript" src="{% static 'jqwidgets/jqxnumberinput.js' %}"></script>
     <script type="text/javascript" src="{% static 'jqwidgets/jqxtooltip.js' %}"></script>
     <script type="text/javascript" src="{% static 'jqwidgets/jqxdatetimeinput.js' %}"></script>
-    <script type="text/javascript" src="{% static 'jqwidgets/globalization/globalize.js' %}"></script>
+{#    <script type="text/javascript" src="{% static 'jqwidgets/globalization/globalize.js' %}"></script>#}
     {#    <script type="text/javascript" src="{% static 'demos.js' %}"></script>#}
     <script type="text/javascript" src="{% static 'billForm.js' %}"></script>
     <script type="text/javascript" src="{% static 'jspdf.min.js' %} "></script>
@@ -56,6 +56,7 @@
             $("#excelExport").jqxButton();
 {#            $("#pdfExport").jqxButton();#}
 {#            $("#print").jqxButton();#}
+            $("#grid").jqxGrid({ theme: "arctic" });
 
             $("#print-selected-bill").on('click', function () {
                 var selectedrowindex = $("#grid").jqxGrid('getselectedrowindex');
