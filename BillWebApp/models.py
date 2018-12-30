@@ -1,11 +1,11 @@
 from django.db import models
 
 
-class BillDetails(models.Model):
+class BillDetail(models.Model):
     bill_no = models.BigIntegerField(primary_key=True, db_column="BillNo")
-    source = models.CharField(max_length=50)
-    destination = models.CharField(max_length=50)
-    amount = models.IntegerField()
+    source = models.CharField(max_length=50, db_column="Source")
+    destination = models.CharField(max_length=50, db_column="Destination")
+    amount = models.IntegerField(db_column="Amount")
     docket_charges = models.IntegerField(db_column="DocketCharges")
     docket_number = models.BigIntegerField(db_column="DocketNumber")
     company_name = models.CharField(max_length=100, db_column="CompanyName")
@@ -17,8 +17,8 @@ class BillDetails(models.Model):
     is_payment_done = models.BooleanField(db_column="IsPaymentDone", default=False, null=True)
     detention_charges = models.IntegerField(db_column="OverHeightCharges")
     over_height_charges = models.IntegerField(db_column="DetentionCharges")
-    fov_charges = models.IntegerField(db_column="FOVCharges")
-    quantity = models.CharField(max_length=50)
+    fov_charges = models.IntegerField(db_column="FOVCharges", null=True)
+    quantity = models.CharField(max_length=50, db_column="Quantity")
 
     class Meta:
         db_table = u'bill_detail'

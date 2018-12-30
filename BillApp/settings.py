@@ -82,15 +82,15 @@ WSGI_APPLICATION = 'BillApp.wsgi.application'
 #         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
 #     }
 # }
-
+#
 # DATABASES = {
 #     'default': {
-#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         'NAME': 'laxmiroadlinesbills',
-#         'USER': 'myprojectuser',
-#         'PASSWORD': 'password',
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'postgres',
+#         'USER': 'postgres',
+#         'PASSWORD': 'admin',
 #         'HOST': '127.0.0.1',
-#         'PORT': '55698',
+#         'PORT': '5432',
 #     }
 # }
 

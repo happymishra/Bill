@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from rest_framework.decorators import api_view
-from .models import BillDetails
+from .models import BillDetail
 from rest_framework import status
 from django.http import JsonResponse
 import traceback
@@ -12,7 +12,7 @@ def get_bill_details(request):
     data = list()
     last_bill_no = 0
 
-    query = BillDetails.objects.all().order_by('-bill_no')
+    query = BillDetail.objects.all().order_by('-bill_no')
 
     try:
         for each_bill in query:
@@ -61,24 +61,24 @@ def add_bill_details(request):
         details = request.data
 
         import datetime
-        bill_details_obj = BillDetails(source=details.get('source'),
-                                       destination=details.get('destination'),
-                                       amount=details.get('amount'),
-                                       gst_in=details.get('gst_in'),
-                                       company_name=details.get('companyName'),
-                                       company_address=details.get('companyAddress'),
-                                       shipment_date=datetime.datetime.strptime(details.get('shipmentDate'),
+        bill_details_obj = BillDetail(source=details.get('source'),
+                                      destination=details.get('destination'),
+                                      amount=details.get('amount'),
+                                      gst_in=details.get('gst_in'),
+                                      company_name=details.get('companyName'),
+                                      company_address=details.get('companyAddress'),
+                                      shipment_date=datetime.datetime.strptime(details.get('shipmentDate'),
                                                                                 '%d-%m-%Y').strftime('%Y-%m-%d'),
-                                       bill_submission_date=datetime.datetime.strptime(
+                                      bill_submission_date=datetime.datetime.strptime(
                                            details.get('billSubmissionDate'), '%d-%m-%Y').strftime('%Y-%m-%d'),
-                                       docket_number=details.get('docketNumber'),
-                                       docket_charges=details.get('docketCharges'),
-                                       vehicle_number=details.get('vehicleNumber'),
-                                       is_payment_done=details.get('isPaymentDone'),
-                                       detention_charges=details.get('detentionCharges'),
-                                       fov_charges=details.get('fovCharges'),
-                                       over_height_charges=details.get('overHeightCharges'),
-                                       quantity=details.get('quantity'))
+                                      docket_number=details.get('docketNumber'),
+                                      docket_charges=details.get('docketCharges'),
+                                      vehicle_number=details.get('vehicleNumber'),
+                                      is_payment_done=details.get('isPaymentDone'),
+                                      detention_charges=details.get('detentionCharges'),
+                                      fov_charges=details.get('fovCharges'),
+                                      over_height_charges=details.get('overHeightCharges'),
+                                      quantity=details.get('quantity'))
 
         if details.get('billNo'):
             bill_details_obj.bill_no = details.get('billNo')
@@ -100,7 +100,7 @@ def update_bill_details(request):
     try:
         bill_detail = request.data
 
-        bill_detail_obj = BillDetails.objects.filter(bill_no=bill_detail.get('billNo'))
+        bill_detail_obj = BillDetail.objects.filter(bill_no=bill_detail.get('billNo'))
         curr_bill_detail_obj = bill_detail_obj[0]
 
         bill_detail_obj.update(source=bill_detail.get('source'),
