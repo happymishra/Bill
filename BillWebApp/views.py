@@ -117,10 +117,10 @@ def update_bill_details(request):
                                is_payment_done=0 if bill_detail.get('isPaymentDone') == 'false' else 1,
                                quantity=bill_detail.get('quantity') or curr_bill_detail_obj.quantity,
                                over_height_charges=bill_detail.get(
-                                   'overHeightCharges') or bill_detail.over_height_charges,
+                                   'overHeightCharges') or curr_bill_detail_obj.over_height_charges,
                                detention_charges=bill_detail.get(
-                                   'detentionCharges') or bill_detail_obj.detention_charges,
-                               fov_charges=bill_detail.get('fovCharges') or bill_detail_obj.fov_charges
+                                   'detentionCharges') or curr_bill_detail_obj.detention_charges,
+                               fov_charges=bill_detail.get('fovCharges') or curr_bill_detail_obj.fov_charges
                                )
 
         resp['status'] = status.HTTP_200_OK

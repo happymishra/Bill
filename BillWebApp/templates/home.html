@@ -34,6 +34,7 @@
     <script type="text/javascript" src="{% static 'jqwidgets/jqxcheckbox.js' %}"></script>
     <script type="text/javascript" src="{% static 'jqwidgets/jqxcalendar.js' %}"></script>
     <script type="text/javascript" src="{% static 'jqwidgets/jqxnumberinput.js' %}"></script>
+    <script type="text/javascript" src="{% static 'jqwidgets/jqxtooltip.js' %}"></script>
     <script type="text/javascript" src="{% static 'jqwidgets/jqxdatetimeinput.js' %}"></script>
     <script type="text/javascript" src="{% static 'jqwidgets/globalization/globalize.js' %}"></script>
     {#    <script type="text/javascript" src="{% static 'demos.js' %}"></script>#}
@@ -53,8 +54,8 @@
             getAllBillDetails();
             $("#print-selected-bill").jqxButton();
             $("#excelExport").jqxButton();
-            $("#pdfExport").jqxButton();
-            $("#print").jqxButton();
+{#            $("#pdfExport").jqxButton();#}
+{#            $("#print").jqxButton();#}
 
             $("#print-selected-bill").on('click', function () {
                 var selectedrowindex = $("#grid").jqxGrid('getselectedrowindex');
@@ -80,30 +81,30 @@
             });
 
 
-            $("#pdfExport").click(function () {
-                $("#grid").jqxGrid('exportdata', 'pdf', 'BillDetails');
-            });
+{#            $("#pdfExport").click(function () {#}
+{#                $("#grid").jqxGrid('exportdata', 'pdf', 'BillDetails');#}
+{#            });#}
 
 
-            $("#print").click(function () {
-                var gridContent = $("#grid").jqxGrid('exportdata', 'html');
-                var newWindow = window.open('', '', 'width=800, height=500'),
-                        document = newWindow.document.open(),
-                        pageContent =
-                                '<!DOCTYPE html>\n' +
-                                '<html>\n' +
-                                '<head>\n' +
-                                '<meta charset="utf-8" />\n' +
-                                '<title>jQWidgets Grid</title>\n' +
-                                '</head>\n' +
-                                '<body>\n' + gridContent + '\n</body>\n</html>';
-                document.write(pageContent);
-                var tds = document.getElementsByTagName("th");
-
-                for (var i = 0; i < tds.length; i++) {
-                    tds[i].style.borderWidth = "1px";
-                }
-
+{#            $("#print").click(function () {#}
+{#                var gridContent = $("#grid").jqxGrid('exportdata', 'html');#}
+{#                var newWindow = window.open('', '', 'width=800, height=500'),#}
+{#                        document = newWindow.document.open(),#}
+{#                        pageContent =#}
+{#                                '<!DOCTYPE html>\n' +#}
+{#                                '<html>\n' +#}
+{#                                '<head>\n' +#}
+{#                                '<meta charset="utf-8" />\n' +#}
+{#                                '<title>jQWidgets Grid</title>\n' +#}
+{#                                '</head>\n' +#}
+{#                                '<body>\n' + gridContent + '\n</body>\n</html>';#}
+{#                document.write(pageContent);#}
+{#                var tds = document.getElementsByTagName("th");#}
+{##}
+{#                for (var i = 0; i < tds.length; i++) {#}
+{#                    tds[i].style.borderWidth = "1px";#}
+{#                }#}
+{##}
                 {#                setTimeout(function () {#}
                 {#                    newWindow.print();#}
                 {#                    console.log('Hello')#}
@@ -113,15 +114,15 @@
                 {#                        document.close();#}
                 {#                    }, 500);#}
                 {#                }#}
-                document.close();
-                newWindow.print();
-
-                setTimeout(function () {
-                    newWindow.close();
-                    console.log('Hello')
-                }, 500);
+{#                document.close();#}
+{#                newWindow.print();#}
+{##}
+{#                setTimeout(function () {#}
+{#                    newWindow.close();#}
+{#                    console.log('Hello')#}
+{#                }, 500);#}
 {#                newWindow.close()#}
-            });
+{#            });#}
 
         });
     </script>
@@ -134,18 +135,20 @@
         <div style='float: left;'>
             <input type="button" value="Export to Excel" id='excelExport' class="btn btn-primary"/>
         </div>
-
+<!--
         <div style='margin-left: 10px; float: left;'>
             <input type="button" value="Export to PDF" id='pdfExport' class="btn btn-primary"/>
         </div>
 
+-->
         <div style='margin-left: 10px; float: left;'>
             <input type="button" value="Print Selected Bill" id='print-selected-bill' class="btn btn-primary"/>
         </div>
-
+<!--
         <div style='margin-left: 10px; float: left;'>
             <input type="button" value="Print Table" id='print' class="btn btn-primary"/>
         </div>
+-->
         <div style='margin-left: 10px; float: left;'>
             <a href="/addBill" class="btn btn-primary" id="new-bill">Add New Bill</a>
         </div>
