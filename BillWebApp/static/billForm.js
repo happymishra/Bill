@@ -1,3 +1,49 @@
+$(document).ready(function () {
+    $.ajax({
+        type: "GET",
+        url: '/api/getCompanyDetails',
+        dataType: 'json',
+        success: function (response) {
+            if (response.status == 200) {
+                console.log("success")
+                var data = response.data;
+                var companyContainer = $('#company-name-container');
+                var option = '<option value="1">Select Company </option>';
+
+                $.each(data, function (key, value) {
+                    option += '<option value="' + key + '">' + key + '</option>';
+                });
+
+                companyContainer.append(option);
+                $('select').change(data, function (event) {
+                    var selectCompany = data[this.value];
+
+                    if (selectCompany) {
+
+                        $('#address').val(selectCompany.address || '');
+                        $('#district').val(selectCompany.district || '');
+                        $('#city').val(selectCompany.city || '');
+                        $('#pin-code').val(selectCompany.pincode || '');
+                        $('#gstin').val(selectCompany.gstin || '');
+                    } else {
+                        $('#address').val('');
+                        $('#district').val('');
+                        $('#city').val('');
+                        $('#pin-code').val('');
+                        $('#gstin').val('');
+                    }
+                });
+            } else {
+                console.log("An error occurred in the api")
+            }
+        },
+        error: function (err) {
+            console.log("An error occurred")
+        }
+    })
+});
+
+
 var getBillDetails = function (rowdata) {
     console.log("Hello");
     var newRow = true;
@@ -117,8 +163,8 @@ var getBillDetails = function (rowdata) {
     }
 
 
-    // var billTableDOM = $('<div style="font-family: monospace"> </div>') //$('#bill-table');
-    var billTableDOM = $('#bill-table');
+    var billTableDOM = $('<div style="font-family: monospace"> </div>') //$('#bill-table');
+    // var billTableDOM = $('#bill-table');
 
     var headerHTML = '<header>' +
         '<div class="header-laxmi">LAXMI ROAD LINES</div>' +

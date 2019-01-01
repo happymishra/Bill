@@ -124,7 +124,6 @@ function makeTable(dataAdapter, gridData) {
                 text: 'Total Amount', editable: false, datafield: 'total',
                 rendered: tooltiprenderer, exportable:true, menu:false,
                 cellsrenderer: function (index, datafield, value, defaultvalue, column, rowdata) {
-                    debugger;
                     var rowFullData = dataAdapter.records[index]
                     var total = rowFullData.amount + rowFullData.docketCharges + rowFullData.fovCharges +
                         rowFullData.overHeightCharges;

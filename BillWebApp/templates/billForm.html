@@ -24,7 +24,6 @@
     <script type="text/javascript" src="{% static 'jspdf.min.js' %} "></script>
     <script type="text/javascript" src="{% static 'html2canvas.min.js' %} "></script>
     <script type="text/javascript" src="{% static 'jsgrid.min.js' %}"></script>
-    <script type="text/javascript" src="{% static 'billForm.js' %}"></script>
     <script type="text/javascript" src="{% static 'jquery.num2words.js' %}"></script>
     <script type="text/javascript" src="{% static 'printThis.js' %}"></script>
 
@@ -69,20 +68,20 @@
         <div class="form-group">
             <label for="ship-date">Shipping Date:</label>
             <div class='input-group date' id='shipping-date'>
-                <input type='text' class="form-control" id="shipping-date-val" placeholder="Shipping Date"/>
                 <span class="input-group-addon">
-						<span class="glyphicon glyphicon-calendar"></span>
-					</span>
+                    <span class="glyphicon glyphicon-calendar"></span>
+                </span>
+                <input type='text' class="form-control" id="shipping-date-val" placeholder="Shipping Date"/>
             </div>
         </div>
 
         <div class="form-group">
             <label for="ship-date">Billing Date:</label>
             <div class='input-group date' id='billing-date'>
-                <input type='text' class="form-control" id="billing-date-val"/>
                 <span class="input-group-addon">
-						<span class="glyphicon glyphicon-calendar"></span>
-					</span>
+                    <span class="glyphicon glyphicon-calendar"></span>
+                </span>
+                <input type='text' class="form-control" id="billing-date-val"/>
             </div>
         </div>
 
@@ -92,14 +91,14 @@
         </div>
 
         <div class="form-group">
-            <label for="docket-charges">Docket Charges:</label>
-            <input type="text" class="form-control" id="docket-charges" value="100" placeholder="Docket Charges"
-                   name="docket-charges">
+            <label for="rate">Rate:</label>
+            <input type="text" class="form-control" id="rate" placeholder="Rate" name="rate">
         </div>
 
         <div class="form-group">
-            <label for="rate">Rate:</label>
-            <input type="text" class="form-control" id="rate" placeholder="Docket Charges" name="rate">
+            <label for="docket-charges">Docket Charges:</label>
+            <input type="text" class="form-control" id="docket-charges" value="100" placeholder="Docket Charges"
+                   name="docket-charges">
         </div>
 
         <div class="form-group">
@@ -110,7 +109,8 @@
 
         <div class="form-group">
             <label for="company-name">Company Name:</label>
-            <input type="text" class="form-control" id="company-name" placeholder="Company Name" name="company-name">
+            <select class="form-control" id="company-name-container">
+            </select>
         </div>
 
         <div class="form-group">
@@ -153,7 +153,8 @@
 
         <div class="form-group">
             <label for="fov-charges">FOV Charges</label>
-            <input type="text" class="form-control" id="fov-charges" value="0" placeholder="FOV charges" name="fov-charges">
+            <input type="text" class="form-control" id="fov-charges" value="0" placeholder="FOV charges"
+                   name="fov-charges">
         </div>
 
         <button type="button" class="btn btn-primary" onclick="printData()">Add & Print</button>
@@ -163,20 +164,20 @@
 
 <div id="bill-table" style="width: 100%">
 
-<script type="text/javascript">
-    $(function () {
-        $('#bill-no').val(billNo);
-        $('#shipping-date').datetimepicker({
-            format: 'DD-MM-YYYY'
-        });
+    <script type="text/javascript">
+        $(function () {
+            $('#bill-no').val(billNo);
+            $('#shipping-date').datetimepicker({
+                format: 'DD-MM-YYYY'
+            });
 
-        $('#billing-date').datetimepicker({
-            format: 'DD-MM-YYYY',
-            defaultDate: new Date()
+            $('#billing-date').datetimepicker({
+                format: 'DD-MM-YYYY',
+                defaultDate: new Date()
 
+            });
         });
-    });
-</script>
+    </script>
 
 </body>
 </html>

@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from rest_framework.decorators import api_view
-from .models import BillDetail
+from .models import BillDetail, Company
 from rest_framework import status
 from django.http import JsonResponse
 import traceback
@@ -122,6 +122,34 @@ def update_bill_details(request):
                                    'detentionCharges') or curr_bill_detail_obj.detention_charges,
                                fov_charges=bill_detail.get('fovCharges') or curr_bill_detail_obj.fov_charges
                                )
+
+        resp['status'] = status.HTTP_200_OK
+    except Exception as ex:
+        raise ex
+        resp['status'] = status.HTTP_500_INTERNAL_SERVER_ERROR
+        resp['message'] = str(ex)
+
+    return JsonResponse(resp)
+
+
+@api_view(['GET'])
+def get_company_details(request):
+    resp = dict()
+    data = dict()
+
+    try:
+        query = Company.objects.all()
+
+        for each_company in query:
+            data[each_company.company_name] = {
+                'address': each_company.company_address,
+                'city': each_company.company_city,
+                'district': each_company.company_district,
+                'gstin': each_company.company_gstin,
+                'pincode': each_company.company_pincode
+            }
+
+        resp['data'] = data
 
         resp['status'] = status.HTTP_200_OK
     except Exception as ex:
