@@ -28,10 +28,10 @@ class Company(models.Model):
     id = models.AutoField(primary_key=True, db_column='Id')
     company_name = models.CharField(max_length=100, db_column='CompanyName')
     company_address = models.TextField(db_column='CompanyAddress')
-    company_city = models.CharField(max_length=100, db_column='CompanyCity', null=True)
-    company_district = models.CharField(max_length=100, db_column='CompanyDistrict', null=True)
-    company_gstin = models.CharField(max_length=50, db_column='CompanyGSTIN', null=True)
-    company_pincode = models.CharField(max_length=50, db_column='CompanyPinCode', null=True)
+    company_city = models.CharField(max_length=100, db_column='CompanyCity', null=True, blank=True)
+    company_district = models.CharField(max_length=100, db_column='CompanyDistrict', null=True, blank=True)
+    company_gstin = models.CharField(max_length=50, db_column='CompanyGSTIN', null=True, blank=True)
+    company_pincode = models.CharField(max_length=50, db_column='CompanyPinCode', null=True, blank=True)
 
     class Meta:
         db_table = u'company'

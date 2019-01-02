@@ -84,21 +84,25 @@ function makeTable(dataAdapter, gridData) {
         altrows: true,
         enabletooltips: true,
         ready: function () {
-            var filterCells = $("#grid .jqx-grid-cell-filter-row");
-            var dateFilterCell1 = $(filterCells[8]);
-            var dateFilterCell2 = $(filterCells[9]);
+            var filterCells = $("#grid .jqx-grid-cell-filter-row .jqx-datetimeinput");
+            var dateFilterCell1 = $(filterCells[0]);
+            var dateFilterCell2 = $(filterCells[1]);
 
             dateFilterCell1.mouseover(function () {
-                var newContent = $("#grid .jqx-grid-cell-filter-row:eq(8) input").val();
+                var newContent = dateFilterCell1.val();
                 if (newContent) {
                      dateFilterCell1.jqxTooltip({content: newContent});
+                } else {
+                    dateFilterCell1.jqxTooltip('destroy')
                 }
             });
 
             dateFilterCell2.mouseover(function () {
-                var newContent = $("#grid .jqx-grid-cell-filter-row:eq(9) input").val();
+                var newContent = dateFilterCell2.val();
                 if (newContent) {
                     dateFilterCell2.jqxTooltip({content: newContent});
+                } else {
+                    dateFilterCell2.jqxTooltip('destroy')
                 }
             });
         },

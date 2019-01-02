@@ -162,22 +162,22 @@
 </div>
 </div>
 
-<div id="bill-table" style="width: 100%">
+<!-- <div id="bill-table" style="width: 100%; font-family: monospace;"> -->
 
-    <script type="text/javascript">
-        $(function () {
-            $('#bill-no').val(billNo);
-            $('#shipping-date').datetimepicker({
-                format: 'DD-MM-YYYY'
-            });
-
-            $('#billing-date').datetimepicker({
-                format: 'DD-MM-YYYY',
-                defaultDate: new Date()
-
-            });
+<script type="text/javascript">
+    $(function () {
+        $('#bill-no').val(billNo);
+        $('#shipping-date').datetimepicker({
+            format: 'DD-MM-YYYY'
         });
-    </script>
+
+        $('#billing-date').datetimepicker({
+            format: 'DD-MM-YYYY',
+            defaultDate: new Date()
+
+        });
+    });
+</script>
 
 </body>
 </html>

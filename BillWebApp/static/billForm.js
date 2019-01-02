@@ -1,3 +1,5 @@
+var companyData;
+
 $(document).ready(function () {
     $.ajax({
         type: "GET",
@@ -7,6 +9,7 @@ $(document).ready(function () {
             if (response.status == 200) {
                 console.log("success")
                 var data = response.data;
+                companyData = data;
                 var companyContainer = $('#company-name-container');
                 var option = '<option value="1">Select Company </option>';
 
@@ -58,7 +61,7 @@ var getBillDetails = function (rowdata) {
     var docketCharges = $('#docket-charges').val();
     var rate = $('#rate').val();
     var quantity = $('#quantity').val();
-    var companyName = $('#company-name').val();
+    var companyName = $('#company-name-container').val();
     var address = $('#address').val();
     var district = $('#district').val();
     var city = $('#city').val();
@@ -81,13 +84,22 @@ var getBillDetails = function (rowdata) {
         quantity = rowdata.quantity;
         companyName = rowdata['companyName'];
         address = rowdata['companyAddress'];
-        district = rowdata.district;
-        city = rowdata.city;
-        pinCode = rowdata.pinCode;
-        gstin = rowdata['gst_in'];
+
+        compDetails = companyData && companyData[companyName]
+
+        if(compDetails) {
+            district = compDetails.district;
+            city = compDetails.city;
+            pinCode = compDetails.pinCode;
+            gstin = compDetails.gstin;
+        }
+
+
         overHeightCharges = rowdata.overHeightCharges || 0;
         detentionCharges = rowdata.detentionCharges || 0;
         ovCharges = rowdata.fovCharges || 0;
+
+        newRow = false;
     }
 
     rowdata = {
@@ -120,8 +132,13 @@ var getBillDetails = function (rowdata) {
 
     if (lenAddress > 20) {
         var commaIndex = address.indexOf(',', 20)
-        address1 = address.substring(0, commaIndex + 1)
-        address22 = address.substring(commaIndex + 2)
+        if(commaIndex != -1) {
+            address1 = address.substring(0, commaIndex + 1)
+            address22 = address.substring(commaIndex + 2)
+        } else {
+            address1 = address
+            address22 = ''
+        }
 
         if (address22.length > 20) {
             var commaIndex = address22.indexOf(',', 20)
@@ -139,13 +156,24 @@ var getBillDetails = function (rowdata) {
             address2 = address2 + ', ' + city
         } else if (address3 && address3.length <= 10) {
             address3 = address3 + ', ' + city
+        } else {
+            address3 = address3 + ' ' + city
         }
 
         if (district) {
             if (pinCode) {
                 add2 = '<div>' + district + ' - ' + pinCode + '</div>'
             } else {
-                add2 = '<div>' + district + '</div>'
+                var c = ''
+                if(address3.indexOf(city) > -1 && address3.length < 10) {
+                    c = address3 + ', '
+                    address3 = ''
+                } else if (address2.indexOf(city) > -1 && address2.length < 10) {
+                    c = address2 + ', '
+                    address2 = ''
+                }
+
+                add2 = '<div>' + c + district + '</div>'
             }
         } else if (pinCode) {
             add2 = '<div>' + pinCode + '</div>'
@@ -213,8 +241,8 @@ var getBillDetails = function (rowdata) {
         '<div class="firstcolumn"> <p>1. </p> </div>' +
         '<div class="secondcolumn"> <p>Source: ' + source + ' </p></div>' +
         '<div class="thirdcolumn"> <p> ' + quantity + ' </p></div>' +
-        '<div class="my-table-cell"> <p>₹ ' + rate + ' /-</p></div>' +
-        '<div class="my-table-cell"> <p>₹ ' + rate + ' /-</p></div>' +
+        '<div class="my-table-cell"> <p>₹ ' + rate + ' </p></div>' +
+        '<div class="my-table-cell"> <p>₹ ' + rate + ' </p></div>' +
         '</div>' +
 
         '<div class="my-table-row">' +
@@ -254,7 +282,7 @@ var getBillDetails = function (rowdata) {
         '<div class="secondcolumn"><p>Docket charges</p></div>' +
         '<div class="thirdcolumn"><p></p></div>' +
         '<div class="my-table-cell"><p></p></div>' +
-        '<div class="my-table-cell"><p> ₹ ' + docketCharges + ' /-</p></div>' +
+        '<div class="my-table-cell"><p> ₹ ' + docketCharges + ' </p></div>' +
         '</div>';
 
     var srNo = 6;
@@ -270,7 +298,7 @@ var getBillDetails = function (rowdata) {
             '<div class="secondcolumn"><p>Detention charges</p></div>' +
             '<div class="thirdcolumn"><p></p></div>' +
             '<div class="my-table-cell"><p></p></div>' +
-            '<div class="my-table-cell"><p> ₹ ' + detentionCharges + ' /-</p></div>' +
+            '<div class="my-table-cell"><p> ₹ ' + detentionCharges + ' </p></div>' +
             '</div>'
 
     }
@@ -285,7 +313,7 @@ var getBillDetails = function (rowdata) {
             '<div class="secondcolumn"><p>Over height charges</p></div>' +
             '<div class="thirdcolumn"><p></p></div>' +
             '<div class="my-table-cell"><p></p></div>' +
-            '<div class="my-table-cell"><p> ₹ ' + overHeightCharges + ' /-</p></div>' +
+            '<div class="my-table-cell"><p> ₹ ' + overHeightCharges + ' </p></div>' +
             '</div>'
 
     }
@@ -300,7 +328,7 @@ var getBillDetails = function (rowdata) {
             '<div class="secondcolumn"><p>FOV charges</p></div>' +
             '<div class="thirdcolumn"><p></p></div>' +
             '<div class="my-table-cell"><p></p></div>' +
-            '<div class="my-table-cell"><p> ₹ ' + fovCharges + ' /-</p></div>' +
+            '<div class="my-table-cell"><p> ₹ ' + fovCharges + ' </p></div>' +
             '</div>'
     }
 
@@ -310,7 +338,7 @@ var getBillDetails = function (rowdata) {
         '<div class="my-table-row">' +
         '<div class="merge"><p>₹ (in words):  ' + totalAmountInWords + ' only</p></div>' +
         ' <div class="my-table-cell" style="width: 12.5%"><p>Total</p></div>' +
-        ' <div class="my-table-cell"><p>₹  ' + totalAmount + ' /-</p></div>' +
+        ' <div class="my-table-cell"><p>₹  ' + totalAmount + ' </p></div>' +
         '</div>' +
         '</div>'
 
@@ -347,7 +375,7 @@ var getBillDetails = function (rowdata) {
 
 
     billTableDOM.printThis({
-        pageTitle: "THis is new",
+        pageTitle: "",
         header: '',
         footer: '',
         beforePrint: function () {
@@ -355,7 +383,10 @@ var getBillDetails = function (rowdata) {
         },
         afterPrint: function () {
             document.title = 'Laxmi Road Lines Bills'
-            window.location = '/'
+
+            if(newRow) {
+                window.location = '/'
+            }  
         }
 
     });
