@@ -20,28 +20,12 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js"></script>
 
-    <script type="text/javascript" src="{% static 'billForm.js' %}"></script>
     <script type="text/javascript" src="{% static 'jspdf.min.js' %} "></script>
     <script type="text/javascript" src="{% static 'html2canvas.min.js' %} "></script>
     <script type="text/javascript" src="{% static 'jsgrid.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'jquery.num2words.js' %}"></script>
     <script type="text/javascript" src="{% static 'printThis.js' %}"></script>
-
-    <script>
-        function GetURLParameter(sParam) {
-            var sPageURL = window.location.search.substring(1);
-            var sURLVariables = sPageURL.split('&');
-            for (var i = 0; i < sURLVariables.length; i++) {
-                var sParameterName = sURLVariables[i].split('=');
-                if (sParameterName[0] == sParam) {
-                    return decodeURIComponent(sParameterName[1]);
-                }
-            }
-        }
-
-        var billNo = GetURLParameter('billNo');
-    </script>
-
+    <script type="text/javascript" src="{% static 'billForm.js' %}"></script>
 
 </head>
 <body>
@@ -49,6 +33,7 @@
 <div class="container" style="padding-top: 10px; padding-bottom: 20px">
     <h2 style="color: #337ab7;">Enter Bill Details</h2>
     <form>
+        <div>
         <input id="bill-no" type="hidden"/>
         <div class="form-group">
             <label for="source">Source:</label>
@@ -61,12 +46,12 @@
         </div>
 
         <div class="form-group">
-            <label for="vehicle-num">Vehicle Number:</label>
+            <label for="vehicle-num">Vehicle number:</label>
             <input type="text" class="form-control" id="vehicle-num" placeholder="Vehicle Number" name="vehicle-num">
         </div>
 
         <div class="form-group">
-            <label for="ship-date">Shipping Date:</label>
+            <label>Shipping date:</label>
             <div class='input-group date' id='shipping-date'>
                 <span class="input-group-addon">
                     <span class="glyphicon glyphicon-calendar"></span>
@@ -76,7 +61,7 @@
         </div>
 
         <div class="form-group">
-            <label for="ship-date">Billing Date:</label>
+            <label>Billing date:</label>
             <div class='input-group date' id='billing-date'>
                 <span class="input-group-addon">
                     <span class="glyphicon glyphicon-calendar"></span>
@@ -86,7 +71,7 @@
         </div>
 
         <div class="form-group">
-            <label for="docket-num">Docket Number:</label>
+            <label for="docket-num">Docket number:</label>
             <input type="text" class="form-control" id="docket-num" placeholder="Docket Number" name="docket-num">
         </div>
 
@@ -96,7 +81,7 @@
         </div>
 
         <div class="form-group">
-            <label for="docket-charges">Docket Charges:</label>
+            <label for="docket-charges">Docket charges:</label>
             <input type="text" class="form-control" id="docket-charges" value="100" placeholder="Docket Charges"
                    name="docket-charges">
         </div>
@@ -108,7 +93,7 @@
         </div>
 
         <div class="form-group">
-            <label for="company-name">Company Name:</label>
+            <label>Company name:</label>
             <select class="form-control" id="company-name-container">
             </select>
         </div>
@@ -129,7 +114,7 @@
         </div>
 
         <div class="form-group">
-            <label for="pin-code">Pin Code:</label>
+            <label for="pin-code">Pin code:</label>
             <input type="text" class="form-control" id="pin-code" placeholder="Pin Code" name="pin-code">
         </div>
 
@@ -138,35 +123,129 @@
             <input type="text" class="form-control" id="gstin" placeholder="GSTIN" name="gstin">
         </div>
 
-        <div class="form-group">
-            <label for="detention-charges">Detention or Demurrage Charges:</label>
-            <input type="text" class="form-control" id="detention-charges"
-                   placeholder="Detention or Demurrage Charges"
-                   name="detention-charges" value="0">
+        <fieldset class="scheduler-border">
+            <legend class="scheduler-border">
+                <label for="fov-charges">Loading/unloading charges</label>
+            </legend>
+
+            <div class="form-group">
+                <label for="fov-charges">Remark</label>
+                <input type="text" class="form-control remark" id="loading-charges-remark"
+                       placeholder="Enter loading unloading charges remark">
+
+                <label for="fov-charges">Charges</label>
+                <input type="text" class="form-control" id="loading-charges" value="0"
+                       placeholder="Loading / Unloading charges"
+                       name="loading-charges">
+            </div>
+        </fieldset>
+
+        <fieldset class="scheduler-border">
+            <legend class="scheduler-border">
+                <label for="detention-charges">Detention or demurrage charges</label>
+            </legend>
+
+            <div class="form-group">
+                <label for="fov-charges">Remark</label>
+                <input type="text" class="form-control remark" id="detention-charges-remark"
+                       placeholder="Enter detention charges remark">
+                <label for="fov-charges">Charges</label>
+                <input type="text" class="form-control" id="detention-charges"
+                       placeholder="Detention or Demurrage Charges"
+                       name="detention-charges" value="0">
+            </div>
+        </fieldset>
+
+<!--{#        <div class="form-group">#}-->
+<!--{#            <label for="fov-charges">Loading/Unloading Charges</label>#}-->
+<!--{#            <input type="text" class="form-control" id="loading-charges-remark"#}-->
+<!--{#                   placeholder="Enter loading unloading charges remark">#}-->
+<!--{#            <input type="text" class="form-control" id="loading-charges" value="0" placeholder="Loading / Unloading charges"#}-->
+<!--{#                   name="loading-charges">#}-->
+<!--{#        </div>#}-->
+
+<!--{#        <div class="form-group">#}-->
+<!--{#            <label for="detention-charges">Detention or Demurrage Charges:</label>#}-->
+<!--{#            <input type="text" class="form-control" id="detention-charges-remark"#}-->
+<!--{#                   placeholder="Enter detention charges remark">#}-->
+<!--{#            <input type="text" class="form-control" id="detention-charges"#}-->
+<!--{#                   placeholder="Detention or Demurrage Charges"#}-->
+<!--{#                   name="detention-charges" value="0">#}-->
+<!--{#        </div>#}-->
+
+        <fieldset class="scheduler-border">
+            <legend class="scheduler-border">
+                <label for="over-height-charges">Over height charges</label>
+            </legend>
+
+            <div class="form-group">
+                <label for="fov-charges">Remark</label>
+                <input type="text" class="form-control remark" id="over-height-charges-remark"
+                       placeholder="Enter over height charges remark">
+                <label for="fov-charges">Charges</label>
+                <input type="text" class="form-control" id="over-height-charges"
+                       placeholder="Over Height Charges" name="over-height-charges" value="0">
+            </div>
+        </fieldset>
+
+<!--{#        <div class="form-group">-->
+<!--{#            <label for="over-height-charges">Over Height Charges:</label>-->
+<!--{#            <input type="text" class="form-control" id="over-height-charges-remark"-->
+<!--{#                   placeholder="Enter over height charges remark">#}-->
+<!--{#            <input type="text" class="form-control" id="over-height-charges"#}-->
+<!--{#                   placeholder="Over Height Charges" name="over-height-charges" value="0">#}-->
+<!--{#        </div>#}-->
+
+        <fieldset class="scheduler-border">
+            <legend class="scheduler-border">
+                <label for="fov-charges">FOV charges</label>
+            </legend>
+
+            <div class="form-group">
+                <label for="fov-charges" class="legend-label">Remark</label>
+                <input type="text" class="form-control remark" id="fov-charges-remark"
+                       placeholder="Enter fov charges remark">
+                <label for="fov-charges">Charges</label>
+                <input type="text" class="form-control" id="fov-charges" value="0" placeholder="FOV charges"
+                       name="fov-charges">
+            </div>
+        </fieldset>
+
+            <!--<div class="form-group">-->
+                <!--<label for="fov-charges">FOV Charges</label>-->
+                <!--<input type="text" class="form-control" id="fov-charges-remark"-->
+                       <!--placeholder="Enter fov charges remark">-->
+                <!--<input type="text" class="form-control" id="fov-charges" value="0" placeholder="FOV charges"-->
+                       <!--name="fov-charges">-->
+            <!--</div>-->
+
         </div>
 
-        <div class="form-group">
-            <label for="over-height-charges">Over Height Charges:</label>
-            <input type="text" class="form-control" id="over-height-charges"
-                   placeholder="Over Height Charges" name="over-height-charges" value="0">
-        </div>
+        <button type="button" class="btn btn-primary" id="print-add-form"
+                onclick="printData()">Add & Print
+        </button>
+        <button type="button" class="btn btn-primary" id="add-bill"
+                onclick="addData(isEditBill)">Add Bill
+        </button>
+        <button type="button" class="btn btn-primary" id="update-bill"
+                onclick="updateServerDb()">Update Bill
+        </button>
 
-        <div class="form-group">
-            <label for="fov-charges">FOV Charges</label>
-            <input type="text" class="form-control" id="fov-charges" value="0" placeholder="FOV charges"
-                   name="fov-charges">
-        </div>
-
-        <button type="button" class="btn btn-primary" onclick="printData()">Add & Print</button>
     </form>
 </div>
 </div>
 
-<!-- <div id="bill-table" style="width: 100%; font-family: monospace;"> -->
+ <div id="bill-table" style="width: 100%; font-family: monospace; margin-top:50px">
 
 <script type="text/javascript">
     $(function () {
-        $('#bill-no').val(billNo);
+//        $('#bill-no').val(billNo);
+//
+//
+        if (isEditBill) {
+            populateDataFromCache()
+        }
+
         $('#shipping-date').datetimepicker({
             format: 'DD-MM-YYYY'
         });
@@ -177,6 +256,7 @@
 
         });
     });
+
 </script>
 
 </body>

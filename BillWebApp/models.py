@@ -15,10 +15,8 @@ class BillDetail(models.Model):
     bill_submission_date = models.DateField(db_column="BillSubmissionDate")
     vehicle_number = models.CharField(max_length=50, db_column='VehicleNumber')
     is_payment_done = models.BooleanField(db_column="IsPaymentDone", default=False, null=True)
-    detention_charges = models.IntegerField(db_column="OverHeightCharges")
-    over_height_charges = models.IntegerField(db_column="DetentionCharges")
-    fov_charges = models.IntegerField(db_column="FOVCharges", null=True)
     quantity = models.CharField(max_length=50, db_column="Quantity")
+    extras = models.TextField()
 
     class Meta:
         db_table = u'bill_detail'

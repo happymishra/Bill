@@ -1,6 +1,9 @@
 var companyData;
 
 $(document).ready(function () {
+    billNo = GetURLParameter('billNo');
+    isEditBill = GetURLParameter('edit');
+
     $.ajax({
         type: "GET",
         url: '/api/getCompanyDetails',
@@ -18,7 +21,9 @@ $(document).ready(function () {
                 });
 
                 companyContainer.append(option);
+
                 $('select').change(data, function (event) {
+                    debugger;
                     var selectCompany = data[this.value];
 
                     if (selectCompany) {
@@ -36,6 +41,15 @@ $(document).ready(function () {
                         $('#gstin').val('');
                     }
                 });
+
+                $(function () {
+                    if (isEditBill) {
+                        populateDataFromCache()
+                    } else {
+                        $('#update-bill').hide()
+                    }
+
+                });
             } else {
                 console.log("An error occurred in the api")
             }
@@ -47,9 +61,9 @@ $(document).ready(function () {
 });
 
 
-var getBillDetails = function (rowdata) {
-    console.log("Hello");
+var getBillDetails = function (rowdata, onlyAdd) {
     var newRow = true;
+    onlyAdd = onlyAdd || false;
 
     var billNo = $('#bill-no').val();
     var source = $('#source').val();
@@ -67,9 +81,15 @@ var getBillDetails = function (rowdata) {
     var city = $('#city').val();
     var pinCode = $('#pin-code').val();
     var gstin = $('#gstin').val();
-    var overHeightCharges = $('#over-height-charges').val();
-    var detentionCharges = $('#detention-charges').val();
-    var fovCharges = $('#fov-charges').val();
+
+    var overHeightCharges = $('#over-height-charges').val() || 0;
+    var overHeightChargesRemark = $('#over-height-charges-remark').val() || '';
+    var detentionCharges = $('#detention-charges').val() || 0;
+    var detentionChargesRemark = $('#detention-charges-remark').val() || '';
+    var fovCharges = $('#fov-charges').val() || 0;
+    var fovChargesRemark = $('#fov-charges-remark').val()  || '';
+    var loadingCharges = $('#loading-charges').val() || 0;
+    var loadingChargesRemark = $('#loading-charges-remark').val() || '';
 
     if (rowdata) {
         billNo = rowdata['billNo'];
@@ -85,7 +105,9 @@ var getBillDetails = function (rowdata) {
         companyName = rowdata['companyName'];
         address = rowdata['companyAddress'];
 
-        compDetails = companyData && companyData[companyName]
+        variousCharges = rowdata['variousCharges'] || {};
+
+        compDetails = companyData && companyData[companyName];
 
         if(compDetails) {
             district = compDetails.district;
@@ -95,12 +117,46 @@ var getBillDetails = function (rowdata) {
         }
 
 
-        overHeightCharges = rowdata.overHeightCharges || 0;
-        detentionCharges = rowdata.detentionCharges || 0;
-        ovCharges = rowdata.fovCharges || 0;
+        // overHeightCharges = rowdata.overHeightCharges || 0;
+        // detentionCharges = rowdata.detentionCharges || 0;
+        // fovCharges = rowdata.fovCharges || 0;
+
+        // var overHeight = variousCharges.ohc || {}
+
+
+        overHeightCharges = (variousCharges.ohc || {}).c || 0;
+        overHeightChargesRemark = (variousCharges.ohc || {}).r || ''
+
+        detentionCharges = (variousCharges.dc || {}).c || 0;
+        detentionChargesRemark = (variousCharges.dc || {}).r || ''
+
+        fovCharges = (variousCharges.fc || {}).c || 0;
+        fovChargesRemark = (variousCharges.fc || {}).r || ''
+
+        loadingCharges = (variousCharges.lc || {}).c || 0;
+        loadingChargesRemark = (variousCharges.lc || {}).r || ''
 
         newRow = false;
     }
+
+    var variousCharges = {
+        "lc": {
+            "r": loadingChargesRemark,
+            "c": loadingCharges
+        },
+        "ohc": {
+            "r": overHeightChargesRemark,
+            "c": overHeightCharges
+        },
+        "dc": {
+            "r": detentionChargesRemark,
+            "c": detentionCharges
+        },
+        "fc": {
+            "r": fovChargesRemark,
+            "c": fovCharges
+        }
+    };
 
     rowdata = {
         "billNo": billNo,
@@ -114,11 +170,9 @@ var getBillDetails = function (rowdata) {
         "billSubmissionDate": billingDate,
         "docketNumber": docketNumber,
         "docketCharges": docketCharges,
-        'vehicleNumber': vehicleNumber,
-        'overHeightCharges': overHeightCharges,
-        'detentionCharges': detentionCharges,
-        'fovCharges': fovCharges,
-        'quantity': quantity
+        "vehicleNumber": vehicleNumber,
+        "quantity": quantity,
+        "variousCharges": variousCharges
     };
 
 
@@ -191,8 +245,8 @@ var getBillDetails = function (rowdata) {
     }
 
 
-    var billTableDOM = $('<div style="font-family: monospace"> </div>') //$('#bill-table');
-    // var billTableDOM = $('#bill-table');
+    // var billTableDOM = $('<div style="font-family: monospace; margin-top:50px"> </div>') //$('#bill-table');
+    var billTableDOM = $('#bill-table');
 
     var headerHTML = '<header>' +
         '<div class="header-laxmi">LAXMI ROAD LINES</div>' +
@@ -223,6 +277,7 @@ var getBillDetails = function (rowdata) {
         '<div>Bill No: ' + billNo + '</div>' +
         '<div>Date: ' + billingDate + '</div>' +
         '</div>' +
+        '</div>'
         '</div>'
 
     var billTableHeader = '<div class="my-table-heading">' +
@@ -295,7 +350,8 @@ var getBillDetails = function (rowdata) {
         rows = rows +
             '<div class="my-table-row">' +
             '<div class="firstcolumn"><p>' + srNo + '. </p></div>' +
-            '<div class="secondcolumn"><p>Detention charges</p></div>' +
+            '<div class="secondcolumn"><p>Detention charges (' + detentionChargesRemark +
+                                       ')</p></div>' +
             '<div class="thirdcolumn"><p></p></div>' +
             '<div class="my-table-cell"><p></p></div>' +
             '<div class="my-table-cell"><p> ₹ ' + detentionCharges + ' </p></div>' +
@@ -310,7 +366,8 @@ var getBillDetails = function (rowdata) {
         rows = rows +
             '<div class="my-table-row">' +
             '<div class="firstcolumn"><p>' + srNo + '. </p></div>' +
-            '<div class="secondcolumn"><p>Over height charges</p></div>' +
+            '<div class="secondcolumn"><p>Over height charges (' + overHeightChargesRemark +
+                                       ')</p></div>' +
             '<div class="thirdcolumn"><p></p></div>' +
             '<div class="my-table-cell"><p></p></div>' +
             '<div class="my-table-cell"><p> ₹ ' + overHeightCharges + ' </p></div>' +
@@ -325,10 +382,25 @@ var getBillDetails = function (rowdata) {
         rows = rows +
             '<div class="my-table-row">' +
             '<div class="firstcolumn"><p>' + srNo + '. </p></div>' +
-            '<div class="secondcolumn"><p>FOV charges</p></div>' +
+            '<div class="secondcolumn"><p>FOV charges (' + fovChargesRemark +
+                                       ')</p></div>' +
             '<div class="thirdcolumn"><p></p></div>' +
             '<div class="my-table-cell"><p></p></div>' +
             '<div class="my-table-cell"><p> ₹ ' + fovCharges + ' </p></div>' +
+            '</div>'
+    }
+
+    if (loadingCharges && loadingCharges != 0) {
+        srNo++;
+        totalAmount = totalAmount + parseInt(loadingCharges);
+
+        rows = rows +
+            '<div class="my-table-row">' +
+            '<div class="firstcolumn"><p>' + srNo + '. </p></div>' +
+            '<div class="secondcolumn"><p>Loading / Unloading charges (' + loadingChargesRemark + ')</p></div>' +
+            '<div class="thirdcolumn"><p></p></div>' +
+            '<div class="my-table-cell"><p></p></div>' +
+            '<div class="my-table-cell"><p> ₹ ' + loadingCharges + ' </p></div>' +
             '</div>'
     }
 
@@ -342,7 +414,7 @@ var getBillDetails = function (rowdata) {
         '</div>' +
         '</div>'
 
-    var footerContents = '<div style="padding-top: 60px">' +
+    var footerContents = '<div style="padding-top: 100px">' +
         '<div style="width:40%; float: left; padding-bottom: 20px">' +
         '<div>Proprietor / Manager Sign</div>' +
         '</div>' +
@@ -350,17 +422,17 @@ var getBillDetails = function (rowdata) {
         '<div> Receiver&apos;s Sign</div>' +
         '</div>'
     '</div>'
-    var footerMsg = '<div style=" padding-top: 30px">' +
+    var footerMsg = '<div style=" padding-top: 60px; text-align: center">' +
         'Thank you for your business' +
         '</div>'
 
     var mainDiv = $('<div></div>')
 
-    container1.append(billTableHeader)
+    container1.append(billTableHeader);
     container1.append(rows);
-    table.append(container1)
-    table.append(totalAmtInWordsDOM)
-    mainDiv.append(table)
+    table.append(container1);
+    table.append(totalAmtInWordsDOM);
+    mainDiv.append(table);
 
 
     billTableDOM.append(headerHTML);
@@ -370,9 +442,12 @@ var getBillDetails = function (rowdata) {
     billTableDOM.append(footerMsg);
 
     if (newRow) {
-        addBillDB(rowdata)
-    }
+        addBillDB(rowdata);
 
+        if (onlyAdd) {
+            window.location = '/'
+        }
+    }
 
     billTableDOM.printThis({
         pageTitle: "",
@@ -386,18 +461,20 @@ var getBillDetails = function (rowdata) {
 
             if(newRow) {
                 window.location = '/'
-            }  
+            }
         }
 
     });
-}
+};
 
 function addBillDB(rowdata) {
+    var csrftoken = getCookie('csrftoken');
+
     $.ajax({
         type: "POST",
         url: '/api/addBillDetails',
         dataType: 'json',
-        data: rowdata,
+        data:  JSON.stringify(rowdata),
         success: function (data) {
             console.log("success")
         },
@@ -406,6 +483,17 @@ function addBillDB(rowdata) {
         }
 
     })
+}
+
+function GetURLParameter(sParam) {
+    var sPageURL = window.location.search.substring(1);
+    var sURLVariables = sPageURL.split('&');
+    for (var i = 0; i < sURLVariables.length; i++) {
+        var sParameterName = sURLVariables[i].split('=');
+        if (sParameterName[0] == sParam) {
+            return decodeURIComponent(sParameterName[1]);
+        }
+    }
 }
 
 
@@ -419,6 +507,22 @@ function genPDF() {
     })
 }
 
+function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie != '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = jQuery.trim(cookies[i]);
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
 function printData(selectedRowData) {
     getBillDetails(selectedRowData)
 }
@@ -426,6 +530,50 @@ function printData(selectedRowData) {
 $('#print-button').on('click', function () {
     printData();
 });
+
+function populateDataFromCache() {
+    $('#print-add-form').hide();
+    $('#add-bill').hide();
+
+    var loadingCharges = {};
+    var detentionCharges = {};
+    var overHeightCharges = {};
+    var fovCharges = {};
+
+    var billDetails = JSON.parse(localStorage.getItem('billDetailCache'));
+    var variousCharges = JSON.parse(billDetails.variousCharges);
+
+    if (variousCharges) {
+        loadingCharges = variousCharges.lc;
+        detentionCharges = variousCharges.dc;
+        overHeightCharges = variousCharges.ohc;
+        fovCharges = variousCharges.fc;
+    }
+
+    $('#bill-no').val(billDetails.billNo);
+    $('#source').val(billDetails.source);
+    $('#destination').val(billDetails.destination);
+    $('#shipping-date-val').val(billDetails.shipmentDate);
+    $('#billing-date-val').val(billDetails.billSubmissionDate);
+    $('#vehicle-num').val(billDetails.vehicleNumber);
+    $('#docket-num').val(billDetails.docketNumber);
+    $('#docket-charges').val(billDetails.docketCharges);
+    $('#rate').val(billDetails.amount);
+    $('#quantity').val(billDetails.quantity);
+    $('#company-name-container').val(billDetails.companyName).trigger('change');
+
+    $('#over-height-charges').val(overHeightCharges.c);
+    $('#over-height-charges-remark').val(overHeightCharges.r);
+
+    $('#detention-charges').val(detentionCharges.c);
+    $('#detention-charges-remark').val(detentionCharges.r);
+
+    $('#fov-charges').val(fovCharges.c);
+    $('#fov-charges-remark').val(fovCharges.r);
+
+    $('#loading-charges').val(loadingCharges.c);
+    $('#loading-charges-remark').val(loadingCharges.r);
+}
 
 function convertNumberToWords(amount) {
     var words = new Array();
@@ -507,4 +655,87 @@ function convertNumberToWords(amount) {
         words_string = words_string.split("  ").join(" ");
     }
     return words_string;
+}
+
+function updateServerDb() {
+    var csrftoken = getCookie('csrftoken');
+
+    var billNo = $('#bill-no').val();
+    var source = $('#source').val();
+    var destination = $('#destination').val();
+    var shippingDate = $('#shipping-date-val').val();
+    var billingDate = $('#billing-date-val').val();
+    var vehicleNumber = $('#vehicle-num').val();
+    var docketNumber = $('#docket-num').val();
+    var docketCharges = $('#docket-charges').val();
+    var rate = $('#rate').val();
+    var quantity = $('#quantity').val();
+    var companyName = $('#company-name-container').val();
+    var address = $('#address').val();
+    var district = $('#district').val();
+    var city = $('#city').val();
+    var pinCode = $('#pin-code').val();
+    var gstin = $('#gstin').val();
+
+    var overHeightCharges = $('#over-height-charges').val() || 0;
+    var overHeightChargesRemark = $('#over-height-charges-remark').val() || '';
+    var detentionCharges = $('#detention-charges').val() || 0;
+    var detentionChargesRemark = $('#detention-charges-remark').val() || '';
+    var fovCharges = $('#fov-charges').val() || 0;
+    var fovChargesRemark = $('#fov-charges-remark').val() || '';
+    var loadingCharges = $('#loading-charges').val() || 0;
+    var loadingChargesRemark = $('#loading-charges-remark').val() || '';
+
+    var variousCharges = {
+        "lc": {
+            "r": loadingChargesRemark,
+            "c": loadingCharges
+        },
+        "ohc": {
+            "r": overHeightChargesRemark,
+            "c": overHeightCharges
+        },
+        "dc": {
+            "r": detentionChargesRemark,
+            "c": detentionCharges
+        },
+        "fc": {
+            "r": fovChargesRemark,
+            "c": fovCharges
+        }
+    };
+
+    rowdata = {
+        "billNo": billNo,
+        "source": source,
+        "destination": destination,
+        "amount": rate,
+        "gst_in": gstin,
+        "companyName": companyName,
+        "companyAddress": address,
+        "shipmentDate": shippingDate,
+        "billSubmissionDate": billingDate,
+        "docketNumber": docketNumber,
+        "docketCharges": docketCharges,
+        "vehicleNumber": vehicleNumber,
+        "quantity": quantity,
+        "variousCharges": variousCharges
+    };
+
+    var data = JSON.stringify(rowdata);
+
+
+    $.ajax({
+        type: "POST",
+        url: '/api/updateBillDetails',
+        dataType: 'json',
+        data: data,
+        success: function (data) {
+            console.log("success")
+        },
+        error: function (err) {
+            console.log("An error occurred " + err)
+        }
+
+    })
 }
