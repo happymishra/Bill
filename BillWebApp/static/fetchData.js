@@ -124,7 +124,8 @@ function makeTable(dataAdapter, gridData) {
         },
         columns: [
             {
-                text: 'Edit', datafield: 'Edit', columntype: 'button', editable: false, width: 70,
+                text: 'Edit', datafield: 'Edit', columntype: 'button', editable: false,
+                width: 70, exportable:false,
                 cellsrenderer: function () {
                     return "Edit";
                 },
@@ -140,13 +141,11 @@ function makeTable(dataAdapter, gridData) {
 
                     window.location = '/addBill?edit=true'
 
-
-
-
                 }
             },
             {
-                text: 'Print', datafield: 'Print', columntype: 'button', editable: false, width: 70,
+                text: 'Print', datafield: 'Print', columntype: 'button', editable: false,
+                width: 70, exportable:false,
                 cellsrenderer: function () {
                     return "Print";
                 },
@@ -180,7 +179,7 @@ function makeTable(dataAdapter, gridData) {
                 rendered: tooltiprenderer, exportable:true, menu:false,
                 cellsrenderer: function (index, datafield, value, defaultvalue, column, rowdata) {
                     var rowFullData = dataAdapter.records[index];
-                    debugger;
+
                     var variousCharges = rowFullData.variousCharges || '{}';
 
                     variousCharges = JSON.parse(variousCharges);

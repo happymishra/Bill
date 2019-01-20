@@ -10,6 +10,7 @@
     <link type="text/css" rel="stylesheet" href="{% static 'jsgrid.min.css' %}"/>
     <link type="text/css" rel="stylesheet" href="{% static 'jsgrid-theme.min.css' %}"/>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="{% static 'billTable.css' %}">
 
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
     <meta name="viewport" content="width=device-width, initial-scale=1 maximum-scale=1 minimum-scale=1"/>
@@ -36,8 +37,8 @@
     <script type="text/javascript" src="{% static 'jqwidgets/jqxnumberinput.js' %}"></script>
     <script type="text/javascript" src="{% static 'jqwidgets/jqxtooltip.js' %}"></script>
     <script type="text/javascript" src="{% static 'jqwidgets/jqxdatetimeinput.js' %}"></script>
-<!-- {#    <script type="text/javascript" src="{% static 'jqwidgets/globalization/globalize.js' %}"></script>#}
-    {#    <script type="text/javascript" src="{% static 'demos.js' %}"></script>#} -->
+    <!-- {#    <script type="text/javascript" src="{% static 'jqwidgets/globalization/globalize.js' %}"></script>#}
+        {#    <script type="text/javascript" src="{% static 'demos.js' %}"></script>#} -->
     <script type="text/javascript" src="{% static 'billForm.js' %}"></script>
     <script type="text/javascript" src="{% static 'jspdf.min.js' %} "></script>
     <script type="text/javascript" src="{% static 'html2canvas.min.js' %} "></script>
@@ -55,7 +56,7 @@
             $("#excelExport").jqxButton();
 // {#            $("#pdfExport").jqxButton();#}
 // {#            $("#print").jqxButton();#}
-            $("#grid").jqxGrid({ theme: "arctic" });
+            $("#grid").jqxGrid({theme: "arctic"});
 
 //            $("#print-selected-bill").on('click', function () {
 //                var selectedrowindex = $("#grid").jqxGrid('getselectedrowindex');
@@ -136,20 +137,20 @@
         <div style='float: left;'>
             <input type="button" value="Export to Excel" id='excelExport' class="btn btn-primary"/>
         </div>
-<!--
-        <div style='margin-left: 10px; float: left;'>
-            <input type="button" value="Export to PDF" id='pdfExport' class="btn btn-primary"/>
-        </div>
+        <!--
+                <div style='margin-left: 10px; float: left;'>
+                    <input type="button" value="Export to PDF" id='pdfExport' class="btn btn-primary"/>
+                </div>
 
--->
+        -->
         <!--<div style='margin-left: 10px; float: left;'>-->
-            <!--<input type="button" value="Print Selected Bill" id='print-selected-bill' class="btn btn-primary"/>-->
+        <!--<input type="button" value="Print Selected Bill" id='print-selected-bill' class="btn btn-primary"/>-->
         <!--</div>-->
-<!--
-        <div style='margin-left: 10px; float: left;'>
-            <input type="button" value="Print Table" id='print' class="btn btn-primary"/>
-        </div>
--->
+        <!--
+                <div style='margin-left: 10px; float: left;'>
+                    <input type="button" value="Print Table" id='print' class="btn btn-primary"/>
+                </div>
+        -->
         <div style='margin-left: 10px; float: left;'>
             <a href="/addBill" class="btn btn-primary" id="new-bill">Add New Bill</a>
         </div>
@@ -157,6 +158,6 @@
     </div>
 </div>
 </div>
-    <div id="bill-table" style="width: 100%; font-family: monospace; margin-top:50px"> </div>
+<!--<div id="bill-table" style="width: 100%; font-family: monospace; margin-top:50px"></div>-->
 </body>
 </html>

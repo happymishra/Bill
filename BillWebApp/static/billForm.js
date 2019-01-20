@@ -43,6 +43,8 @@ $(document).ready(function () {
                 });
 
                 $(function () {
+                    $('#bill-no').val(billNo);
+
                     if (isEditBill) {
                         populateDataFromCache()
                     } else {
@@ -87,7 +89,7 @@ var getBillDetails = function (rowdata, onlyAdd) {
     var detentionCharges = $('#detention-charges').val() || 0;
     var detentionChargesRemark = $('#detention-charges-remark').val() || '';
     var fovCharges = $('#fov-charges').val() || 0;
-    var fovChargesRemark = $('#fov-charges-remark').val()  || '';
+    var fovChargesRemark = $('#fov-charges-remark').val() || '';
     var loadingCharges = $('#loading-charges').val() || 0;
     var loadingChargesRemark = $('#loading-charges-remark').val() || '';
 
@@ -105,11 +107,11 @@ var getBillDetails = function (rowdata, onlyAdd) {
         companyName = rowdata['companyName'];
         address = rowdata['companyAddress'];
 
-        variousCharges = rowdata['variousCharges'] || {};
+        variousCharges = rowdata['variousCharges'] || '{}';
 
         compDetails = companyData && companyData[companyName];
 
-        if(compDetails) {
+        if (compDetails) {
             district = compDetails.district;
             city = compDetails.city;
             pinCode = compDetails.pinCode;
@@ -122,6 +124,8 @@ var getBillDetails = function (rowdata, onlyAdd) {
         // fovCharges = rowdata.fovCharges || 0;
 
         // var overHeight = variousCharges.ohc || {}
+
+        variousCharges = JSON.parse(variousCharges);
 
 
         overHeightCharges = (variousCharges.ohc || {}).c || 0;
@@ -186,7 +190,7 @@ var getBillDetails = function (rowdata, onlyAdd) {
 
     if (lenAddress > 20) {
         var commaIndex = address.indexOf(',', 20)
-        if(commaIndex != -1) {
+        if (commaIndex != -1) {
             address1 = address.substring(0, commaIndex + 1)
             address22 = address.substring(commaIndex + 2)
         } else {
@@ -219,7 +223,7 @@ var getBillDetails = function (rowdata, onlyAdd) {
                 add2 = '<div>' + district + ' - ' + pinCode + '</div>'
             } else {
                 var c = ''
-                if(address3.indexOf(city) > -1 && address3.length < 10) {
+                if (address3.indexOf(city) > -1 && address3.length < 10) {
                     c = address3 + ', '
                     address3 = ''
                 } else if (address2.indexOf(city) > -1 && address2.length < 10) {
@@ -245,8 +249,8 @@ var getBillDetails = function (rowdata, onlyAdd) {
     }
 
 
-    // var billTableDOM = $('<div style="font-family: monospace; margin-top:50px"> </div>') //$('#bill-table');
-    var billTableDOM = $('#bill-table');
+    var billTableDOM = $('<div style="font-family: monospace; margin-top:50px"> </div>') //$('#bill-table');
+    // var billTableDOM = $('#bill-table');
 
     var headerHTML = '<header>' +
         '<div class="header-laxmi">LAXMI ROAD LINES</div>' +
@@ -278,7 +282,7 @@ var getBillDetails = function (rowdata, onlyAdd) {
         '<div>Date: ' + billingDate + '</div>' +
         '</div>' +
         '</div>'
-        '</div>'
+    '</div>'
 
     var billTableHeader = '<div class="my-table-heading">' +
         '<div class="firstcolumn"> Sr.No </div>' +
@@ -351,7 +355,7 @@ var getBillDetails = function (rowdata, onlyAdd) {
             '<div class="my-table-row">' +
             '<div class="firstcolumn"><p>' + srNo + '. </p></div>' +
             '<div class="secondcolumn"><p>Detention charges (' + detentionChargesRemark +
-                                       ')</p></div>' +
+            ')</p></div>' +
             '<div class="thirdcolumn"><p></p></div>' +
             '<div class="my-table-cell"><p></p></div>' +
             '<div class="my-table-cell"><p> ₹ ' + detentionCharges + ' </p></div>' +
@@ -367,7 +371,7 @@ var getBillDetails = function (rowdata, onlyAdd) {
             '<div class="my-table-row">' +
             '<div class="firstcolumn"><p>' + srNo + '. </p></div>' +
             '<div class="secondcolumn"><p>Over height charges (' + overHeightChargesRemark +
-                                       ')</p></div>' +
+            ')</p></div>' +
             '<div class="thirdcolumn"><p></p></div>' +
             '<div class="my-table-cell"><p></p></div>' +
             '<div class="my-table-cell"><p> ₹ ' + overHeightCharges + ' </p></div>' +
@@ -383,7 +387,7 @@ var getBillDetails = function (rowdata, onlyAdd) {
             '<div class="my-table-row">' +
             '<div class="firstcolumn"><p>' + srNo + '. </p></div>' +
             '<div class="secondcolumn"><p>FOV charges (' + fovChargesRemark +
-                                       ')</p></div>' +
+            ')</p></div>' +
             '<div class="thirdcolumn"><p></p></div>' +
             '<div class="my-table-cell"><p></p></div>' +
             '<div class="my-table-cell"><p> ₹ ' + fovCharges + ' </p></div>' +
@@ -446,6 +450,7 @@ var getBillDetails = function (rowdata, onlyAdd) {
 
         if (onlyAdd) {
             window.location = '/'
+            return
         }
     }
 
@@ -459,7 +464,7 @@ var getBillDetails = function (rowdata, onlyAdd) {
         afterPrint: function () {
             document.title = 'Laxmi Road Lines Bills'
 
-            if(newRow) {
+            if (newRow) {
                 window.location = '/'
             }
         }
@@ -474,7 +479,7 @@ function addBillDB(rowdata) {
         type: "POST",
         url: '/api/addBillDetails',
         dataType: 'json',
-        data:  JSON.stringify(rowdata),
+        data: JSON.stringify(rowdata),
         success: function (data) {
             console.log("success")
         },
@@ -731,7 +736,8 @@ function updateServerDb() {
         dataType: 'json',
         data: data,
         success: function (data) {
-            console.log("success")
+            console.log("success");
+            window.location = '/'
         },
         error: function (err) {
             console.log("An error occurred " + err)
