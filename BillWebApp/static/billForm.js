@@ -200,8 +200,12 @@ var getBillDetails = function (rowdata, onlyAdd) {
 
         if (address22.length > 20) {
             var commaIndex = address22.indexOf(',', 20)
-            address2 = address22.substring(0, commaIndex + 1)
-            address3 = address22.substring(commaIndex + 2)
+            if(commaIndex != -1) {
+                address2 = address22.substring(0, commaIndex + 1)
+                address3 = address22.substring(commaIndex + 2)
+            } else {
+                address2 = address22
+            }
         } else {
             address2 = address22
         }

@@ -62,7 +62,7 @@ function prepareDataForGrid(data) {
             {name: 'companyAddress', type: 'string'},
             {name: 'shipmentDate', type: 'date'},
             {name: 'billSubmissionDate', type: 'date'},
-            {name: 'docketNumber', type: 'number'},
+            {name: 'docketNumber', type: 'string'},
             {name: 'gst_in', type: 'string'},
             {name: 'companyName', type: 'string'},
             {name: 'docketCharges', type: 'number'},

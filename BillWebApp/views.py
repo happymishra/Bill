@@ -27,8 +27,8 @@ def get_bill_details(request):
                 "gst_in": each_bill.gst_in,
                 "companyName": each_bill.company_name,
                 "companyAddress": each_bill.company_address,
-                "shipmentDate": each_bill.shipment_date,
-                "billSubmissionDate": each_bill.bill_submission_date,
+                "shipmentDate": each_bill.shipment_date.strftime('%d-%m-%Y'),
+                "billSubmissionDate": each_bill.bill_submission_date.strftime('%d-%m-%Y'),
                 "docketNumber": each_bill.docket_number,
                 "docketCharges": each_bill.docket_charges,
                 "vehicleNumber": each_bill.vehicle_number,
@@ -117,7 +117,7 @@ def update_bill_details(request):
                                    docket_number=bill_detail.get('docketNumber'),
                                    docket_charges=bill_detail.get('docketCharges'),
                                    vehicle_number=bill_detail.get('vehicleNumber'),
-                                   is_payment_done=0 if bill_detail.get('isPaymentDone') == 'false' else 1,
+                                   is_payment_done=1 if bill_detail.get('isPaymentDone') else 0,
                                    quantity=bill_detail.get('quantity') or curr_bill_detail_obj.quantity,
                                    extras=json.dumps(bill_detail.get('variousCharges', "{}"))
                                    )
