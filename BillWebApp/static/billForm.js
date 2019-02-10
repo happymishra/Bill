@@ -93,6 +93,9 @@ var getBillDetails = function (rowdata, onlyAdd) {
     var loadingCharges = $('#loading-charges').val() || 0;
     var loadingChargesRemark = $('#loading-charges-remark').val() || '';
 
+    var gstCharges = $('#gst-charges').val() || 0;
+    var gstChargesRemark = '';
+
     if (rowdata) {
         billNo = rowdata['billNo'];
         source = rowdata['source'];
@@ -129,16 +132,19 @@ var getBillDetails = function (rowdata, onlyAdd) {
 
 
         overHeightCharges = (variousCharges.ohc || {}).c || 0;
-        overHeightChargesRemark = (variousCharges.ohc || {}).r || ''
+        overHeightChargesRemark = (variousCharges.ohc || {}).r || '';
 
         detentionCharges = (variousCharges.dc || {}).c || 0;
-        detentionChargesRemark = (variousCharges.dc || {}).r || ''
+        detentionChargesRemark = (variousCharges.dc || {}).r || '';
 
         fovCharges = (variousCharges.fc || {}).c || 0;
-        fovChargesRemark = (variousCharges.fc || {}).r || ''
+        fovChargesRemark = (variousCharges.fc || {}).r || '';
 
         loadingCharges = (variousCharges.lc || {}).c || 0;
-        loadingChargesRemark = (variousCharges.lc || {}).r || ''
+        loadingChargesRemark = (variousCharges.lc || {}).r || '';
+
+        gstCharges = (variousCharges.gc || {}).c || 0;
+        gstChargesRemark = (variousCharges.gc || {}).r || '';
 
         newRow = false;
     }
@@ -159,6 +165,10 @@ var getBillDetails = function (rowdata, onlyAdd) {
         "fc": {
             "r": fovChargesRemark,
             "c": fovCharges
+        },
+        "gc": {
+            "r": gstChargesRemark,
+            "c": gstCharges
         }
     };
 
@@ -412,6 +422,21 @@ var getBillDetails = function (rowdata, onlyAdd) {
             '</div>'
     }
 
+    if(gstCharges && gstCharges != 0) {
+        srNo++;
+        totalAmount = totalAmount + parseInt(gstCharges);
+
+        rows = rows +
+            '<div class="my-table-row">' +
+            '<div class="firstcolumn"><p>' + srNo + '. </p></div>' +
+            '<div class="secondcolumn"><p>GST charges</p></div>' +
+            '<div class="thirdcolumn"><p></p></div>' +
+            '<div class="my-table-cell"><p></p></div>' +
+            '<div class="my-table-cell"><p> ₹ ' + gstCharges + ' </p></div>' +
+            '</div>'
+
+    }
+
     var totalAmountInWords = convertNumberToWords(totalAmount);
 
     var totalAmtInWordsDOM = '<div class="container-table">' +
@@ -548,6 +573,7 @@ function populateDataFromCache() {
     var detentionCharges = {};
     var overHeightCharges = {};
     var fovCharges = {};
+    var gstCharges = {};
 
     var billDetails = JSON.parse(localStorage.getItem('billDetailCache'));
     var variousCharges = JSON.parse(billDetails.variousCharges);
@@ -557,6 +583,7 @@ function populateDataFromCache() {
         detentionCharges = variousCharges.dc;
         overHeightCharges = variousCharges.ohc;
         fovCharges = variousCharges.fc;
+        gstCharges = variousCharges.gc;
     }
 
     $('#bill-no').val(billDetails.billNo);
@@ -582,6 +609,11 @@ function populateDataFromCache() {
 
     $('#loading-charges').val(loadingCharges.c);
     $('#loading-charges-remark').val(loadingCharges.r);
+
+    if (gstCharges) {
+        $('#gst-charges').val(gstCharges.c);
+    }
+
 }
 
 function convertNumberToWords(amount) {
@@ -695,6 +727,9 @@ function updateServerDb() {
     var loadingCharges = $('#loading-charges').val() || 0;
     var loadingChargesRemark = $('#loading-charges-remark').val() || '';
 
+    var gstCharges = $('#gst-charges').val() || 0;
+    var gstChargesRemark = '';
+
     var variousCharges = {
         "lc": {
             "r": loadingChargesRemark,
@@ -711,6 +746,10 @@ function updateServerDb() {
         "fc": {
             "r": fovChargesRemark,
             "c": fovCharges
+        },
+        "gc": {
+            "r": gstChargesRemark,
+            "c": gstCharges
         }
     };
 
