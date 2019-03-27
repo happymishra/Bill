@@ -1,6 +1,24 @@
 var companyData;
 
 $(document).ready(function () {
+    // the selector will match all input controls of type :checkbox
+    // and attach a click event handler
+    $("input:checkbox").on('click', function () {
+        // in the handler, 'this' refers to the box clicked on
+        var $box = $(this);
+        if ($box.is(":checked")) {
+            // the name of the box is retrieved using the .attr() method
+            // as it is assumed and expected to be immutable
+            var group = "input:checkbox[name='" + $box.attr("name") + "']";
+            // the checked state of the group/box on the other hand will change
+            // and the current value is retrieved using .prop() method
+            $(group).prop("checked", false);
+            $box.prop("checked", true);
+        } else {
+            $box.prop("checked", false);
+        }
+    });
+
     billNo = GetURLParameter('billNo');
     isEditBill = GetURLParameter('edit');
 
@@ -83,6 +101,7 @@ var getBillDetails = function (rowdata, onlyAdd) {
     var city = $('#city').val();
     var pinCode = $('#pin-code').val();
     var gstin = $('#gstin').val();
+    var gstPaidBy = $("input[name='gst-paid-by']:checked").val();
 
     var overHeightCharges = $('#over-height-charges').val() || 0;
     var overHeightChargesRemark = $('#over-height-charges-remark').val() || '';
@@ -146,6 +165,8 @@ var getBillDetails = function (rowdata, onlyAdd) {
         gstCharges = (variousCharges.gc || {}).c || 0;
         gstChargesRemark = (variousCharges.gc || {}).r || '';
 
+        gstPaidBy = variousCharges.gstPaidBy;
+
         newRow = false;
     }
 
@@ -169,7 +190,8 @@ var getBillDetails = function (rowdata, onlyAdd) {
         "gc": {
             "r": gstChargesRemark,
             "c": gstCharges
-        }
+        },
+        "gstPaidBy": gstPaidBy
     };
 
     rowdata = {
@@ -273,6 +295,7 @@ var getBillDetails = function (rowdata, onlyAdd) {
         '<div style="padding-left: 20%">Maroshi Road, Marol, Andheri (E), Mumbai - 400 059.</div>' +
         '</div>' +
         '<div style="padding-left: 35%">' +
+        '<div>Visit us at: www.laxmiroadlines.com</div>' +
         '<div>Email: brajeshm@laxmiroadlines.com</div>' +
         '<div>Phone: +91 932 173 1735, 779 820 5807</div>' +
         '<div>GSTIN: 27APVPM3241D1ZS</div>' +
@@ -447,6 +470,10 @@ var getBillDetails = function (rowdata, onlyAdd) {
         '</div>' +
         '</div>'
 
+    var gstPaidByEle = '<div style="padding-top:10px">' +
+                            '<b><u>Note</u>: </b> GST paid by ' + gstPaidBy +
+                       '</div>'
+
     var footerContents = '<div style="padding-top: 100px">' +
         '<div style="width:40%; float: left; padding-bottom: 20px">' +
         '<div>Proprietor / Manager Sign</div>' +
@@ -471,6 +498,11 @@ var getBillDetails = function (rowdata, onlyAdd) {
     billTableDOM.append(headerHTML);
     billTableDOM.append(billAddressDetails);
     billTableDOM.append(mainDiv);
+
+    if (gstPaidBy) {
+        billTableDOM.append(gstPaidByEle);
+    }
+
     billTableDOM.append(footerContents);
     billTableDOM.append(footerMsg);
 
@@ -574,6 +606,7 @@ function populateDataFromCache() {
     var overHeightCharges = {};
     var fovCharges = {};
     var gstCharges = {};
+    var gstPaidBy;
 
     var billDetails = JSON.parse(localStorage.getItem('billDetailCache'));
     var variousCharges = JSON.parse(billDetails.variousCharges);
@@ -584,6 +617,7 @@ function populateDataFromCache() {
         overHeightCharges = variousCharges.ohc;
         fovCharges = variousCharges.fc;
         gstCharges = variousCharges.gc;
+        gstPaidBy = variousCharges.gstPaidBy
     }
 
     $('#bill-no').val(billDetails.billNo);
@@ -609,6 +643,8 @@ function populateDataFromCache() {
 
     $('#loading-charges').val(loadingCharges.c);
     $('#loading-charges-remark').val(loadingCharges.r);
+
+    $('input:checkbox[name="gst-paid-by"][value="' + gstPaidBy + '"]').attr('checked', true);
 
     if (gstCharges) {
         $('#gst-charges').val(gstCharges.c);
@@ -717,6 +753,7 @@ function updateServerDb() {
     var city = $('#city').val();
     var pinCode = $('#pin-code').val();
     var gstin = $('#gstin').val();
+    var gstPaidBy = $("input[name='gst-paid-by']:checked").val();
 
     var overHeightCharges = $('#over-height-charges').val() || 0;
     var overHeightChargesRemark = $('#over-height-charges-remark').val() || '';
@@ -750,7 +787,8 @@ function updateServerDb() {
         "gc": {
             "r": gstChargesRemark,
             "c": gstCharges
-        }
+        },
+        "gstPaidBy": gstPaidBy
     };
 
     rowdata = {
