@@ -474,16 +474,16 @@ var getBillDetails = function (rowdata, onlyAdd) {
                             '<b><u>Note</u>: </b> GST paid by ' + gstPaidBy +
                        '</div>'
 
-    var footerContents = '<div style="padding-top: 100px">' +
+    var footerContents = '<div style="padding-top: 110px">' +
         '<div style="width:40%; float: left; padding-bottom: 20px">' +
-        '<div>Proprietor / Manager Sign</div>' +
+        '<div> Receiver&apos;s Sign</div>' +
         '</div>' +
         '<div style="float:right">' +
-        '<div> Receiver&apos;s Sign</div>' +
+        '<div>Proprietor / Manager Sign</div>' +
         '</div>'
     '</div>'
     var footerMsg = '<div style=" padding-top: 60px; text-align: center">' +
-        'Thank you for your business' +
+        'Thank you for doing business with us' +
         '</div>'
 
     var mainDiv = $('<div></div>')
